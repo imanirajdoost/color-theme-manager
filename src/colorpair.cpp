@@ -9,7 +9,7 @@ ColorPair::ColorPair(const ColorPair &color) : m_id()
 {
 
 }
-ColorPair::ColorPair(const QString &id, const QColor &color1, const QColor color2) : m_id()
+ColorPair::ColorPair(const QString &id, const QColor &color1, const QColor &color2) : m_id(id), colorSource(color1), colorTarget(color2)
 {
 
 }
@@ -36,7 +36,7 @@ QColor ColorPair::getColorTarget()
     return colorTarget;
 }
 
-QString ColorPair::getId()
+QString ColorPair::getId() const
 {
     return m_id;
 }
@@ -44,5 +44,13 @@ QString ColorPair::getId()
 QString ColorPair::test()
 {
     return QString("testttt");
+}
+
+bool CompareColorPair::operator ()(const ColorPair& col1, const ColorPair &col2) const
+{
+    if(QString::compare(col1.getId(), col2.getId(), Qt::CaseInsensitive) < 0)
+        return true;
+    else
+        return false;
 }
 

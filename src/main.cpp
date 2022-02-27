@@ -2,6 +2,7 @@
 #include <QApplication>
 #include <iostream>
 #include "colorpair.h"
+#include "xmlreader.h"
 
 int main(int argc, char *argv[])
 {
@@ -12,6 +13,13 @@ int main(int argc, char *argv[])
     //std::cout << "testing" << std::endl;
     ColorPair col;
     std::cout << col.toRGBA(QColor("aaaaaa")).toStdString() << std::endl;
+
+    XMLReader reader;
+    QFile file;
+    file.setFileName("darkTheme.xml");
+    QDir::setCurrent("D:/");
+
+    reader.read(file);
 
 
 	return a.exec();

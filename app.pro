@@ -32,15 +32,21 @@ SOURCES += \
 	mainwindow.cpp \
 	main.cpp \
 	src/colorpair.cpp \
-	src/xmlreader.cpp
+	src/xmlreader.cpp \
+	ui/home_page.cpp \
+	ui/theme_editor_page.cpp
 
 HEADERS += \
 	mainwindow.h \
     src/colorpair.h \
-    src/xmlreader.h
+    src/xmlreader.h \
+    ui/home_page.h \
+    ui/theme_editor_page.h
 
 FORMS += \
-	mainwindow.ui
+	mainwindow.ui \
+	ui/home_page.ui \
+	ui/theme_editor_page.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

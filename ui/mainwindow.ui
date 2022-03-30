@@ -14,9 +14,9 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QVBoxLayout" name="verticalLayout" stretch="200,50,10">
+   <layout class="QVBoxLayout" name="verticalLayout" stretch="5,1,1">
     <item>
-     <widget class="QListWidget" name="listWidget"/>
+     <widget class="QListView" name="listView"/>
     </item>
     <item>
      <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,0,0">

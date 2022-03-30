@@ -15,6 +15,9 @@ public:
 	MainWindow(QWidget *parent = nullptr);
 	~MainWindow();
 
+private slots:
+    void on_button_import_theme_clicked();
+
 private:
 	Ui::MainWindow *ui;
 };

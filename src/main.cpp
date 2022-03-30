@@ -10,7 +10,7 @@ int main(int argc, char *argv[])
 	MainWindow w;
 	w.show();
 
-    //std::cout << "testing" << std::endl;
+    /*
     ColorPair col;
     std::cout << col.toRGBA(QColor("aaaaaa")).toStdString() << std::endl;
 
@@ -20,6 +20,7 @@ int main(int argc, char *argv[])
     QDir::setCurrent("D:/");
 
     reader.read(file);
+    */
 
 
 	return a.exec();

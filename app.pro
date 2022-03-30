@@ -32,19 +32,24 @@ SOURCES += \
 	mainwindow.cpp \
 	main.cpp \
 	src/colorpair.cpp \
+	src/theme.cpp \
 	src/xmlreader.cpp \
+	themewidget.cpp \
 	ui/home_page.cpp \
 	ui/theme_editor_page.cpp
 
 HEADERS += \
 	mainwindow.h \
     src/colorpair.h \
+    src/theme.h \
     src/xmlreader.h \
+    themewidget.h \
     ui/home_page.h \
     ui/theme_editor_page.h
 
 FORMS += \
 	mainwindow.ui \
+	themewidget.ui \
 	ui/home_page.ui \
 	ui/theme_editor_page.ui
 

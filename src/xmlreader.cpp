@@ -5,7 +5,7 @@ XMLReader::XMLReader()
 
 }
 
-void XMLReader::read(QFile& file)
+void XMLReader::read(QFile& file, QList<Theme>& listOfThemes)
 {
     //Read the xml file
     QDomDocument xmlBOM;
@@ -17,9 +17,14 @@ void XMLReader::read(QFile& file)
         std::cout << "Error while loading file" << std::endl;
         return;
     }
+    QFileInfo fileInfo(file.fileName());
+    QString fName = fileInfo.fileName();
     // Set data into the QDomDocument before processing
     xmlBOM.setContent(&file);
     file.close();
+
+    Theme* theme = new Theme();
+    theme->themeName = fName;
 
     // Extract the root markup
     QDomElement root=xmlBOM.documentElement();
@@ -44,7 +49,6 @@ void XMLReader::read(QFile& file)
         // Check if the child tag name is color
         if (Component.tagName()=="color")
         {
-
             // Read and display the component ID
             QString id = Component.attribute("id","No ID");
             // Get the first child of the component
@@ -65,9 +69,12 @@ void XMLReader::read(QFile& file)
 
             //ColorPair cp(id,source,target);
             m_set.emplace(id,source,target);
-        }
 
+            ColorPair pair(id,source,target);
+            theme->addColorPair(pair);
+        }
         // Next component
         Component = Component.nextSibling().toElement();
     }//End of while loop
+    listOfThemes.push_back((Theme)theme);
 }//End of method

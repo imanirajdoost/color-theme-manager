@@ -16,7 +16,7 @@
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout" stretch="5,1,1">
     <item>
-     <widget class="QListView" name="listView"/>
+     <layout class="QHBoxLayout" name="themeLayout"/>
     </item>
     <item>
      <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,0,0">

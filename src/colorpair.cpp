@@ -41,11 +41,6 @@ QString ColorPair::getId() const
     return m_id;
 }
 
-QString ColorPair::test()
-{
-    return QString("testttt");
-}
-
 bool CompareColorPair::operator ()(const ColorPair& col1, const ColorPair &col2) const
 {
     if(QString::compare(col1.getId(), col2.getId(), Qt::CaseInsensitive) < 0)

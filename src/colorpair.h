@@ -14,7 +14,6 @@ public:
     ColorPair(const QString &id);       //Constructor that initializes id
     static QString toRGBA(const QColor &color);
     static QColor fromRGBA(const QString &colorStr);
-    QString test();
 
     QColor getColorSource();
     QColor getColorTarget();

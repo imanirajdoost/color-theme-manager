@@ -6,12 +6,13 @@
 #include <QtXml>
 #include <QTextStream>
 #include "colorpair.h"
+#include "theme.h"
 
 class XMLReader
 {
 public:
     XMLReader();
-    void read(QFile& file);
+    void read(QFile& file, QList<Theme>& listOfThemes);
 private:
     std::set<ColorPair, CompareColorPair> m_set;
 };

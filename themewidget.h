@@ -22,6 +22,9 @@ public:
 private slots:
     void on_theme_button_clicked();
 
+//signals:
+    //void sendThemeData(Theme*);
+
 private:
     Ui::ThemeWidget *ui;
     Theme *myTheme;     //Theme pointer that is MINE!

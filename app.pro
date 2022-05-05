@@ -29,6 +29,7 @@ INCLUDEPATH += $${INCLUDE_DIR} $${INCLUDE_WIDGETS_DIR}
 VPATH += $${SRC_DIR} $${SRC_WIDGETS_DIR} $${INCLUDE_DIR} $${INCLUDE_WIDGETS_DIR} $${UI_DIR}
 
 SOURCES += \
+	colorwidget.cpp \
 	mainwindow.cpp \
 	main.cpp \
 	src/colorpair.cpp \
@@ -39,6 +40,7 @@ SOURCES += \
 	ui/theme_editor_page.cpp
 
 HEADERS += \
+    colorwidget.h \
 	mainwindow.h \
     src/colorpair.h \
     src/theme.h \
@@ -48,6 +50,7 @@ HEADERS += \
     ui/theme_editor_page.h
 
 FORMS += \
+	colorwidget.ui \
 	mainwindow.ui \
 	themewidget.ui \
 	ui/home_page.ui \

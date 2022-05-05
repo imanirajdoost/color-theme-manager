@@ -7,10 +7,11 @@ class Theme
 {
 public:
     Theme();
-    void addColorPair(const ColorPair& _colorToAdd);
+    void addColorPair(ColorPair& _colorToAdd);
+    void setName(QString _name);
     QString themeName;
 private:
-    QList<ColorPair> colorpairList;
+    QList<ColorPair>* colorpairList;
 };
 
 #endif // THEME_H

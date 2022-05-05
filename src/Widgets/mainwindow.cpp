@@ -22,15 +22,6 @@ MainWindow::MainWindow(QWidget *parent)
     QHBoxLayout* themes_container = ui->themeLayout;
     themes_container->addLayout(themeList);
     themes_container->addWidget(scrollArea);
-
-    //TODO: Get theme numbers and create widgets according to this number
-/*
-    for(int i =0; i < 10; i++)
-    {
-        ThemeWidget* themeWidget = new ThemeWidget(this);
-        themeList->addWidget(themeWidget);
-    }
-    */
 }
 
 void MainWindow::update_themes()
@@ -80,7 +71,13 @@ void MainWindow::openFile(QString fileName)
         update_themes();
     }
     else {
-        std::cout << "ERROR: No file was found" << std::endl;
+        add_error("No file or wrong extension was loaded");
+        //std::cout << "ERROR: No file was found" << std::endl;
     }
+}
+
+void MainWindow::add_error(QString m)
+{
+    ui->text_error->appendPlainText("[" + QTime::currentTime().toString() + "] " + m);
 }
 

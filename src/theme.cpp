@@ -3,10 +3,15 @@
 
 Theme::Theme()
 {
-
+    colorpairList = new QList<ColorPair>();
 }
 
-void Theme::addColorPair(const ColorPair& _colorToAdd)
+void Theme::addColorPair(ColorPair& _colorToAdd)
 {
-    colorpairList.append(_colorToAdd);
+    colorpairList->append(_colorToAdd);
+}
+
+void Theme::setName(QString _name)
+{
+    themeName = _name;
 }

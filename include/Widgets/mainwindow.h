@@ -27,6 +27,7 @@ public:
 
 private slots:
     void on_button_import_theme_clicked();
+    void add_error(QString m);
 
 private:
     QList<Theme> listOfThemes;

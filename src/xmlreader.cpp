@@ -23,8 +23,8 @@ void XMLReader::read(QFile& file, QList<Theme>& listOfThemes)
     xmlBOM.setContent(&file);
     file.close();
 
-    Theme* theme = new Theme();
-    theme->themeName = fName;
+    Theme theme;
+    theme.setName(fName);
 
     // Extract the root markup
     QDomElement root=xmlBOM.documentElement();
@@ -71,10 +71,10 @@ void XMLReader::read(QFile& file, QList<Theme>& listOfThemes)
             m_set.emplace(id,source,target);
 
             ColorPair pair(id,source,target);
-            theme->addColorPair(pair);
+            theme.addColorPair(pair);
         }
         // Next component
         Component = Component.nextSibling().toElement();
     }//End of while loop
-    listOfThemes.push_back((Theme)theme);
+    listOfThemes.push_back(theme);
 }//End of method

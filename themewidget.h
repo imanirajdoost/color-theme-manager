@@ -16,7 +16,7 @@ class ThemeWidget : public QWidget
 public:
     explicit ThemeWidget(QWidget *parent = nullptr);
     ~ThemeWidget();
-    void setThemeReference(Theme *_themeRef);
+    void setThemeReference(Theme* _themeRef);
     void setText(QString _labelText, QString _buttonText);
 
 private slots:
@@ -27,7 +27,7 @@ private slots:
 
 private:
     Ui::ThemeWidget *ui;
-    Theme *myTheme;     //Theme pointer that is MINE!
+    Theme* myTheme;     //Theme pointer that is MINE!
 };
 
 #endif // THEMEWIDGET_H

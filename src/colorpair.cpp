@@ -19,6 +19,7 @@ ColorPair::ColorPair(const QString &id) : m_id()
 }
 QString ColorPair::toRGBA(const QColor &color)
 {
+//    std::cout << "COLOR LOG:: " << color.rgb() << std::endl;
     return color.name(QColor::HexArgb);
 }
 QColor ColorPair::fromRGBA(const QString &colorStr)
@@ -26,12 +27,12 @@ QColor ColorPair::fromRGBA(const QString &colorStr)
     return QColor(colorStr);
 }
 
-QColor ColorPair::getColorSource()
+QColor ColorPair::getColorSource() const
 {
     return colorSource;
 }
 
-QColor ColorPair::getColorTarget()
+QColor ColorPair::getColorTarget() const
 {
     return colorTarget;
 }

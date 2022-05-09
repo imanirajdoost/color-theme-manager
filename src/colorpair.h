@@ -15,8 +15,8 @@ public:
     static QString toRGBA(const QColor &color);
     static QColor fromRGBA(const QString &colorStr);
 
-    QColor getColorSource();
-    QColor getColorTarget();
+    QColor getColorSource() const;
+    QColor getColorTarget() const;
     QString getId() const;
 private:
     QString m_id;

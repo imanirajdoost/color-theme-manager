@@ -9,7 +9,8 @@ MainWindow::MainWindow(QWidget *parent)
     setAcceptDrops(true);
     // For adding scrolls for themes
     themeList = new QGridLayout;
-    QList<Theme> listOfThemes();
+//    QList<Theme> listOfThemes();
+    listOfThemes = new QList<Theme*>();
     QWidget* scrollAreaContent = new QWidget;
     scrollAreaContent->setLayout(themeList);
 
@@ -26,10 +27,15 @@ MainWindow::MainWindow(QWidget *parent)
 
 void MainWindow::update_themes()
 {
-    for(int i =0; i < listOfThemes.size(); i++)
+    for(int i =0; i < listOfThemes->size(); i++)
     {
         ThemeWidget* themeWidget = new ThemeWidget(this);
-        themeWidget->setThemeReference(&(Theme)listOfThemes.at(i));
+        themeWidget->setThemeReference(listOfThemes->at(i));
+//        std::cout << "Theme ref  = " << (listOfThemes.at(i)).themeName.toStdString() << std::endl;
+//        QList<ColorPair> l = listOfThemes.at(i).getColorPair();
+//        for(int j=0; j < l.count(); j++) {
+//            std::cout << "COL: " << l.at(j).getId().toStdString() << std::endl;
+//        }
         themeList->addWidget(themeWidget);
     }
 }

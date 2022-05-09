@@ -23,9 +23,11 @@ class ColorWidget : public QWidget
 public:
     explicit ColorWidget(QWidget *parent = nullptr);
     ~ColorWidget();
+    void setColorRef(ColorPair* c);
 
 private:
     Ui::ColorWidget *ui;
+    ColorPair* currentColor;
 };
 
 #endif // COLORWIDGET_H

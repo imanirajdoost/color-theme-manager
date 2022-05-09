@@ -3,6 +3,7 @@
 
 #include "src/colorpair.h"
 #include "src/theme.h"
+#include "colorwidget.h"
 
 #include <QWidget>
 #include <QMainWindow>
@@ -24,13 +25,14 @@ class theme_editor_page : public QWidget
 public:
     explicit theme_editor_page(QWidget *parent = nullptr);
     ~theme_editor_page();
-    void receiveThemeData(Theme myTheme);
+    void receiveThemeData(Theme* myTheme);
 
 private:
     Ui::theme_editor_page *ui;
-    QList<ColorPair> listOfColors;
+    QList<ColorPair*>* listOfColors;
     QGridLayout* colorList;
     void theme_editor_page::update_colors();
+    Theme* currentTheme;
 
 //public slots:
 

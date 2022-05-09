@@ -30,7 +30,7 @@ private slots:
     void add_error(QString m);
 
 private:
-    QList<Theme> listOfThemes;
+    QList<Theme*>* listOfThemes;
     QGridLayout* themeList;
 
 	Ui::MainWindow *ui;

@@ -29,6 +29,8 @@ private slots:
     void on_button_import_theme_clicked();
     void add_error(QString m);
 
+    void on_button_create_theme_clicked();
+
 private:
     QList<Theme*>* listOfThemes;
     QGridLayout* themeList;

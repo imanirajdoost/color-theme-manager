@@ -32,9 +32,19 @@ QColor ColorPair::getColorSource() const
     return colorSource;
 }
 
+void ColorPair::setColorSource(const QColor &color)
+{
+    colorSource = color;
+}
+
 QColor ColorPair::getColorTarget() const
 {
     return colorTarget;
+}
+
+void ColorPair::setColorTarget(const QColor &color)
+{
+    colorTarget = color;
 }
 
 QString ColorPair::getId() const

@@ -8,7 +8,6 @@ theme_editor_page::theme_editor_page(QWidget *parent) :
     ui->setupUi(this);
 
     colorList = new QGridLayout;
-    //QList<ColorPair>* listOfColors();
     listOfColors = new QList<ColorPair*>();
     QWidget* scrollAreaContent = new QWidget;
     scrollAreaContent->setLayout(colorList);
@@ -24,21 +23,23 @@ theme_editor_page::theme_editor_page(QWidget *parent) :
     colors_container->addWidget(scrollArea);
 }
 
-theme_editor_page::~theme_editor_page()
-{
-    delete ui;
-}
-
 void theme_editor_page::update_colors()
 {
+    for(int i =0; i < colorList->count(); i++) {
+        colorList->itemAt(i)->widget()->deleteLater();
+        colorList->removeWidget(colorList->itemAt(i)->widget());
+    }
     for(int i =0; i < listOfColors->size(); i++)
     {
-        std::cout << "Color ID: " << listOfColors->at(i)->getId().toStdString() << std::endl;
-        std::cout << "Color Source: " << ColorPair::toRGBA(listOfColors->at(i)->getColorSource()).toStdString() << std::endl;
         ColorWidget* colorWidget = new ColorWidget(this);
         colorWidget->setColorRef(listOfColors->at(i));
         colorList->addWidget(colorWidget);
     }
+}
+
+theme_editor_page::~theme_editor_page()
+{
+    delete ui;
 }
 
 void theme_editor_page::receiveThemeData(Theme* theme){
@@ -47,4 +48,99 @@ void theme_editor_page::receiveThemeData(Theme* theme){
     ui->theme_name_text->setText(currentTheme->themeName);
     listOfColors = currentTheme->getColorPair();
     update_colors();
+}
+
+void theme_editor_page::on_addColorButton_clicked()
+{
+    ColorPair* newCol = new ColorPair("Color new","#ffffffff","#ffffffff");
+    currentTheme->addColorPair(newCol);
+    listOfColors = currentTheme->getColorPair();
+
+    ColorWidget* colorWidget = new ColorWidget(this);
+    colorWidget->setColorRef(listOfColors->at(listOfColors->size() - 1));
+    colorList->addWidget(colorWidget);
+}
+
+
+void theme_editor_page::on_applyOnFileButton_clicked()
+{
+    QString fileName = QFileDialog::getOpenFileName(this,tr("Open file"), "", tr("Text Files (*.xml *.txt *.php *.html *.htm)"));
+    QByteArray fileData;
+    QFile file(fileName);
+    if(file.open(QIODevice::ReadWrite))
+    {
+        int skipped = 0;
+        int replaced = 0;
+
+        fileData = file.readAll(); // read all the data into the byte array
+        QString text(fileData); // add to text string for easy string replace
+
+        std::cout << text.toStdString() << std::endl;
+
+        for (int i=0; i < listOfColors->count(); i++)
+        {
+            ColorPair* pair = listOfColors->at(i);
+            std::cout << "Replacing Color " + ColorPair::toRGBA(pair->getColorSource()).toStdString()
+                      << std::endl;
+
+            // Only replace color if it's not the same
+            QString str1 = ColorPair::toRGBA(pair->getColorSource());
+            QString str2 = ColorPair::toRGBA(pair->getColorTarget());
+            if(QString::compare(str1, str2, Qt::CaseInsensitive))
+            {
+                QString rep = text.replace(QString(str1), QString(str2)); // replace text in string
+                std::cout << "Replaced: " + rep.toStdString() << std::endl;
+                if(rep.size() != 0) // it's not null or empty
+                    replaced++;
+            }
+            else
+                skipped++;
+        }
+
+        std::cout << text.toStdString() << std::endl;
+
+        file.seek(0); // go to the beginning of the file
+        file.write(text.toUtf8()); // write the new text back to the file
+
+        file.close(); // close the file handle.
+
+        QMessageBox *msgBox = new QMessageBox(this);
+        QString txt = "Task finished!\nTotal colors replaced: " + QString::number(replaced) +
+                "\nTotal skipped: " + QString::number(skipped);
+        msgBox->setText(txt);
+        msgBox->exec();
+    }
+    else
+        std::cout << "Error openning file" << std::endl;
+
+
+}
+
+void theme_editor_page::on_getFromWebButton_clicked()
+{
+    bool ok;
+    // Ask for birth date as a string.
+    QString text = QInputDialog::getText(this, "Download from Internet",
+                                         "Paste the link here:", QLineEdit::Normal,
+                                         "", &ok);
+    if (ok && !text.isEmpty()) {
+        std::cout << text.toStdString() << std::endl;
+        QUrl* url = new QUrl(text);
+        if(url->isValid())
+        {
+            std::cout << "Url is valid" << std::endl;
+            QNetworkAccessManager manager;
+            QNetworkRequest request(*url);
+            request.setAttribute(QNetworkRequest::FollowRedirectsAttribute, true);
+            request.setUrl(*url);
+            QNetworkReply *response = manager.get(request);
+            QEventLoop event;
+            connect(response, SIGNAL(finished()), &event, SLOT(quit()));
+            event.exec();
+            QString content = response->readAll();
+            std::cout << content.toStdString() << std::endl;
+
+            //TODO: Now read the colors into the current theme
+        }
+    }
 }

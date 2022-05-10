@@ -18,6 +18,8 @@ public:
     QColor getColorSource() const;
     QColor getColorTarget() const;
     QString getId() const;
+    void setColorSource(const QColor &color);
+    void setColorTarget(const QColor &color);
 private:
     QString m_id;
     QColor colorSource;

@@ -9,7 +9,6 @@ MainWindow::MainWindow(QWidget *parent)
     setAcceptDrops(true);
     // For adding scrolls for themes
     themeList = new QGridLayout;
-//    QList<Theme> listOfThemes();
     listOfThemes = new QList<Theme*>();
     QWidget* scrollAreaContent = new QWidget;
     scrollAreaContent->setLayout(themeList);
@@ -27,15 +26,14 @@ MainWindow::MainWindow(QWidget *parent)
 
 void MainWindow::update_themes()
 {
+    for(int i =0; i < themeList->count(); i++) {
+        themeList->itemAt(i)->widget()->deleteLater();
+        themeList->removeWidget(themeList->itemAt(i)->widget());
+    }
     for(int i =0; i < listOfThemes->size(); i++)
     {
         ThemeWidget* themeWidget = new ThemeWidget(this);
         themeWidget->setThemeReference(listOfThemes->at(i));
-//        std::cout << "Theme ref  = " << (listOfThemes.at(i)).themeName.toStdString() << std::endl;
-//        QList<ColorPair> l = listOfThemes.at(i).getColorPair();
-//        for(int j=0; j < l.count(); j++) {
-//            std::cout << "COL: " << l.at(j).getId().toStdString() << std::endl;
-//        }
         themeList->addWidget(themeWidget);
     }
 }
@@ -85,5 +83,18 @@ void MainWindow::openFile(QString fileName)
 void MainWindow::add_error(QString m)
 {
     ui->text_error->appendPlainText("[" + QTime::currentTime().toString() + "] " + m);
+}
+
+
+void MainWindow::on_button_create_theme_clicked()
+{
+    ThemeWidget* themeWidget = new ThemeWidget(this);
+    Theme* newTheme = new Theme();
+    newTheme->setName("New Theme");
+    ColorPair* newColorPair = new ColorPair("Couleur 0","#ffffffff","#ffffffff");
+    newTheme->addColorPair(newColorPair);
+    listOfThemes->push_back(newTheme);
+    themeWidget->setThemeReference(listOfThemes->at(listOfThemes->size() - 1));
+    themeList->addWidget(themeWidget);
 }
 

@@ -11,6 +11,7 @@
 #include <QStringList>
 #include <QScrollArea>
 #include <QGridLayout>
+#include <QColorDialog>
 
 namespace Ui {
 class ColorWidget;
@@ -25,9 +26,19 @@ public:
     ~ColorWidget();
     void setColorRef(ColorPair* c);
 
+private slots:
+    void on_colorSourceButton_clicked();
+    void changeSourceColor(QColor sourceCol);
+    void changeDestinationColor(QColor destCol);
+
+    void on_colorDestButton_clicked();
+
+
 private:
     Ui::ColorWidget *ui;
     ColorPair* currentColor;
+    void updateSource();
+    void updateDestination();
 };
 
 #endif // COLORWIDGET_H

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>485</width>
-    <height>98</height>
+    <width>909</width>
+    <height>113</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -27,13 +27,19 @@
    <item>
     <widget class="QPushButton" name="theme_button">
      <property name="sizePolicy">
-      <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+      <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
      </property>
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>50</height>
+      </size>
+     </property>
      <property name="text">
-      <string>PushButton</string>
+      <string>New Theme</string>
      </property>
     </widget>
    </item>

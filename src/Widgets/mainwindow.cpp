@@ -34,6 +34,8 @@ void MainWindow::update_themes()
     {
         ThemeWidget* themeWidget = new ThemeWidget(this);
         themeWidget->setThemeReference(listOfThemes->at(i));
+//        themeWidget->setMainWindowRef(this);
+        connect(this,SLOT(updateSingleTheme(Theme*)),themeWidget,SIGNAL(updateTheme(Theme*)));
         themeList->addWidget(themeWidget);
     }
 }
@@ -78,6 +80,11 @@ void MainWindow::openFile(QString fileName)
         add_error("No file or wrong extension was loaded");
         //std::cout << "ERROR: No file was found" << std::endl;
     }
+}
+
+void MainWindow::updateSingleTheme(Theme* _theme)
+{
+    update_themes();
 }
 
 void MainWindow::add_error(QString m)

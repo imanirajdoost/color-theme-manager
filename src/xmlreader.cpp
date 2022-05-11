@@ -5,6 +5,53 @@ XMLReader::XMLReader()
 
 }
 
+void XMLReader::update(Theme* _theme, QString content)
+{
+    QDomDocument xmlBOM;
+    xmlBOM.setContent(content);
+
+    QDomElement root=xmlBOM.documentElement();
+
+    // Get root names and attributes
+    QString Type=root.tagName();
+
+    // Get the first child of the root (Markup color is expected)
+    QDomElement Component=root.firstChild().toElement();
+
+    // Loop while there is a child
+    while(!Component.isNull())
+    {
+        // Check if the child tag name is color
+        if (Component.tagName()=="color")
+        {
+            // Read and display the component ID
+            QString id = Component.attribute("id","No ID");
+
+            // Read and display the component ID
+            QString source =Component.attribute("source","No Source");
+
+            // Read and display the component ID
+            QString target =Component.attribute("target","No Target");
+
+
+            // Display component data
+            std::cout << "id: " << id.toStdString().c_str() << std::endl;
+            std::cout << "   source  = " << source.toStdString().c_str() << std::endl;
+            std::cout << "   target  = " << target.toStdString().c_str() << std::endl;
+            std::cout << std::endl;
+
+            //ColorPair cp(id,source,target);
+            m_set.emplace(id,source,target);
+
+//            std::cout << "KIR: " + ColorPair::toRGBA(ColorPair::fromRGBA(source)).toStdString() << std::endl;
+            ColorPair* pair = new ColorPair(id,ColorPair::fromRGBA(source),ColorPair::fromRGBA(target));
+            _theme->addColorPair(pair);
+        }
+        // Next component
+        Component = Component.nextSibling().toElement();
+    }//End of while loop
+}
+
 void XMLReader::read(QFile& file, QList<Theme*>* listOfThemes)
 {
     //Read the xml file

@@ -4,6 +4,7 @@
 #include <QWidget>
 #include "src/theme.h"
 #include <iostream>
+#include <mainwindow.h>
 
 namespace Ui {
 class ThemeWidget;
@@ -18,16 +19,20 @@ public:
     ~ThemeWidget();
     void setThemeReference(Theme* _themeRef);
     void setText(QString _labelText, QString _buttonText);
+//    void setMainWindowRef(Ui::MainWindow* mainWin);
 
 private slots:
     void on_theme_button_clicked();
 
 //signals:
     //void sendThemeData(Theme*);
+signals:
+    void updateTheme(Theme*);
 
 private:
     Ui::ThemeWidget *ui;
     Theme* myTheme;     //Theme pointer that is MINE!
+//    Ui::MainWindow* _mainWindow;
 };
 
 #endif // THEMEWIDGET_H

@@ -13,6 +13,7 @@ class XMLReader
 public:
     XMLReader();
     void read(QFile& file, QList<Theme*>* listOfThemes);
+    void update(Theme* _theme, QString content);
 private:
     std::set<ColorPair, CompareColorPair> m_set;
 };

@@ -1,5 +1,7 @@
 <RCC>
     <qresource prefix="/icons">
         <file>color_icon.png</file>
+        <file>edit.png</file>
+        <file>undo.png</file>
     </qresource>
 </RCC>

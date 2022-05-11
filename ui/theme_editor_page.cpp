@@ -21,6 +21,8 @@ theme_editor_page::theme_editor_page(QWidget *parent) :
     QHBoxLayout* colors_container = ui->colorLayout;
     colors_container->addLayout(colorList);
     colors_container->addWidget(scrollArea);
+
+    ui->editThemeNameButton->setVisible(false);
 }
 
 void theme_editor_page::update_colors()
@@ -45,10 +47,15 @@ theme_editor_page::~theme_editor_page()
 void theme_editor_page::receiveThemeData(Theme* theme){
     currentTheme = theme;
     // std::cout << "Theme name: " << currentTheme.themeName.toStdString() << std::endl;
-    ui->theme_name_text->setText(currentTheme->themeName);
+    ui->themeNameEditText->setText(currentTheme->themeName);
     listOfColors = currentTheme->getColorPair();
     update_colors();
 }
+
+//void theme_editor_page::setMainWindowRef(Ui::MainWindow* mainWin)
+//{
+//    _mainWindow = mainWin;
+//}
 
 void theme_editor_page::on_addColorButton_clicked()
 {
@@ -141,6 +148,47 @@ void theme_editor_page::on_getFromWebButton_clicked()
             std::cout << content.toStdString() << std::endl;
 
             //TODO: Now read the colors into the current theme
+            XMLReader reader;
+            reader.update(currentTheme, content);
+
+            listOfColors = currentTheme->getColorPair();
+
+            update_colors();
         }
     }
 }
+
+void theme_editor_page::on_themeNameEditText_textChanged()
+{
+    QString newThemeName = ui->themeNameEditText->toPlainText();
+    if(QString::compare(currentTheme->themeName,newThemeName)) {
+        ui->editThemeNameButton->setVisible(true);
+        ui->themeNameEditText->setStyleSheet(QString("background-color: rgb(255, 142, 144);"));
+        isThemeNameChanged = true;
+    }
+    else {
+        ui->editThemeNameButton->setVisible(false);
+        ui->themeNameEditText->setStyleSheet(QString("background-color: rgb(255, 255, 255);"));
+        isThemeNameChanged = false;
+    }
+}
+
+
+void theme_editor_page::on_editThemeNameButton_clicked()
+{
+    ui->themeNameEditText->setText(currentTheme->themeName);
+    isThemeNameChanged = false;
+    ui->editThemeNameButton->setVisible(false);
+    ui->themeNameEditText->setStyleSheet(QString("background-color: rgb(255, 255, 255);"));
+}
+
+
+void theme_editor_page::on_saveThemeButton_clicked()
+{
+    if(isThemeNameChanged) {
+        currentTheme->themeName = ui->themeNameEditText->toPlainText();
+        this->close();
+//        _mainWindow->update_themes();
+    }
+}
+

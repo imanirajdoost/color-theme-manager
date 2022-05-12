@@ -28,6 +28,9 @@ theme_editor_page::theme_editor_page(QWidget *parent) :
 void theme_editor_page::update_colors()
 {
     for(int i =0; i < colorList->count(); i++) {
+        ColorWidget* colW = (ColorWidget*)colorList->itemAt(i);
+        disconnect(this,SIGNAL(saveAllColors()),colW,SLOT(saveColor()));
+        disconnect(colW,SIGNAL(deleteMe(ColorPair*)),this,SLOT(deleteColor(ColorPair*)));
         colorList->itemAt(i)->widget()->deleteLater();
         colorList->removeWidget(colorList->itemAt(i)->widget());
     }
@@ -35,6 +38,8 @@ void theme_editor_page::update_colors()
     {
         ColorWidget* colorWidget = new ColorWidget(this);
         colorWidget->setColorRef(listOfColors->at(i));
+        connect(this,SIGNAL(saveAllColors()),colorWidget,SLOT(saveColor()));
+        connect(colorWidget,SIGNAL(deleteMe(ColorPair*)),this,SLOT(deleteColor(ColorPair*)));
         colorList->addWidget(colorWidget);
     }
 }
@@ -52,11 +57,6 @@ void theme_editor_page::receiveThemeData(Theme* theme){
     update_colors();
 }
 
-//void theme_editor_page::setMainWindowRef(Ui::MainWindow* mainWin)
-//{
-//    _mainWindow = mainWin;
-//}
-
 void theme_editor_page::on_addColorButton_clicked()
 {
     ColorPair* newCol = new ColorPair("Color new","#ffffffff","#ffffffff");
@@ -65,6 +65,8 @@ void theme_editor_page::on_addColorButton_clicked()
 
     ColorWidget* colorWidget = new ColorWidget(this);
     colorWidget->setColorRef(listOfColors->at(listOfColors->size() - 1));
+    connect(this,SIGNAL(saveAllColors()),colorWidget,SLOT(saveColor()));
+    connect(colorWidget,SIGNAL(deleteMe(ColorPair*)),this,SLOT(deleteColor(ColorPair*)));
     colorList->addWidget(colorWidget);
 }
 
@@ -182,13 +184,40 @@ void theme_editor_page::on_editThemeNameButton_clicked()
     ui->themeNameEditText->setStyleSheet(QString("background-color: rgb(255, 255, 255);"));
 }
 
-
 void theme_editor_page::on_saveThemeButton_clicked()
 {
-    if(isThemeNameChanged) {
+    if(isThemeNameChanged)
+    {
         currentTheme->themeName = ui->themeNameEditText->toPlainText();
-        this->close();
-//        _mainWindow->update_themes();
+        emit sendNewThemeName(currentTheme->themeName);
+    }
+
+    emit saveAllColors();
+    this->close();
+}
+
+void theme_editor_page::deleteColor(ColorPair *col)
+{
+    for(int i = 0; i < listOfColors->size(); i++)
+    {
+        if(listOfColors->at(i) == col)
+            listOfColors->removeAt(i);
+    }
+}
+
+
+void theme_editor_page::on_editIconButton_clicked()
+{
+    QString fileName = QFileDialog::getOpenFileName(this,tr("Choose image"),"" ,tr("Images (*.png *.jpg *.jpeg *.bmp)"));
+    if(QString::compare(fileName,"") != 0)
+    {
+        QImage image;
+        if(image.load(fileName))
+        {
+            image.scaledToWidth(ui->themeIcon->width(), Qt::SmoothTransformation);
+//            image.scaledToHeight(ui->themeIcon->height(), Qt::SmoothTransformation);
+            ui->themeIcon->setPixmap(QPixmap::fromImage(image));
+        }
     }
 }
 

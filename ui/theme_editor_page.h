@@ -37,7 +37,7 @@ public:
     explicit theme_editor_page(QWidget *parent = nullptr);
     ~theme_editor_page();
     void receiveThemeData(Theme* myTheme);
-//    void setMainWindowRef(Ui::MainWindow* mainWin);
+    //    void setMainWindowRef(Ui::MainWindow* mainWin);
 
 private slots:
     void on_addColorButton_clicked();
@@ -51,6 +51,12 @@ private slots:
 
     void on_saveThemeButton_clicked();
 
+    void on_editIconButton_clicked();
+
+signals:
+    void saveAllColors();
+    void sendNewThemeName(QString newName);
+
 private:
     Ui::theme_editor_page *ui;
     QList<ColorPair*>* listOfColors;
@@ -59,9 +65,10 @@ private:
     Theme* currentTheme;
     bool isThemeNameChanged = false;
 
-//    Ui::MainWindow* _mainWindow;
+    //    Ui::MainWindow* _mainWindow;
 
-//public slots:
+    public slots:
+    void deleteColor(ColorPair* col);
 
 };
 

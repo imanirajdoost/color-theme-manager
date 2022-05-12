@@ -33,6 +33,7 @@ SOURCES += \
 	mainwindow.cpp \
 	main.cpp \
 	src/colorpair.cpp \
+	src/systemstat.cpp \
 	src/theme.cpp \
 	src/xmlreader.cpp \
 	themewidget.cpp \
@@ -43,6 +44,7 @@ HEADERS += \
     colorwidget.h \
 	mainwindow.h \
     src/colorpair.h \
+    src/systemstat.h \
     src/theme.h \
     src/xmlreader.h \
     themewidget.h \
@@ -64,3 +66,4 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 RESOURCES += \
     resources.qrc
 QT += network
+QT += xml

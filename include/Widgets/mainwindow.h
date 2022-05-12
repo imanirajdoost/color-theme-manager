@@ -37,9 +37,10 @@ public slots:
 private:
     QList<Theme*>* listOfThemes;
     QGridLayout* themeList;
+    SystemStat* stat;
 
 	Ui::MainWindow *ui;
-    void openFile(QString fileName);
+    void openFile(QString fileName, bool shouldWrite);
 protected:
     void dropEvent(QDropEvent *event) override;
     void dragEnterEvent(QDragEnterEvent *event) override;

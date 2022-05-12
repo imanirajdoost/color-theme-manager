@@ -55,7 +55,7 @@
          </size>
         </property>
         <property name="text">
-         <string>Créer un thème</string>
+         <string>Create a theme</string>
         </property>
        </widget>
       </item>
@@ -74,7 +74,7 @@
          </size>
         </property>
         <property name="text">
-         <string>Importer un thème</string>
+         <string>Import a theme</string>
         </property>
        </widget>
       </item>
@@ -93,7 +93,7 @@
          </size>
         </property>
         <property name="text">
-         <string>Sauvegarder le thème</string>
+         <string>Save the theme</string>
         </property>
        </widget>
       </item>

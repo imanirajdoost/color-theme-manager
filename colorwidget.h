@@ -25,6 +25,8 @@ public:
     explicit ColorWidget(QWidget *parent = nullptr);
     ~ColorWidget();
     void setColorRef(ColorPair* c);
+    bool getShouldDelete();
+    ColorPair* getCurrentColorPair();
 
 private slots:
     void on_colorSourceButton_clicked();
@@ -34,11 +36,36 @@ private slots:
     void on_colorDestButton_clicked();
 
 
+    void on_undoColorSourceButton_clicked();
+
+    void on_undoColorDestButton_clicked();
+
+    void on_deleteColorButton_clicked();
+
+    void on_undoColorIdButton_clicked();
+
+    void on_colorIdTextEdit_textChanged();
+
+public slots:
+    void saveColor();
+
+signals:
+    void deleteMe(ColorPair*);
+
 private:
     Ui::ColorWidget *ui;
     ColorPair* currentColor;
-    void updateSource();
-    void updateDestination();
+    void updateSource(QColor newColor);
+    void updateDestination(QColor newColor);
+
+    bool isSourceColorChanged = false;
+    bool isDestColorChanged = false;
+    bool isColorIdChanged = false;
+
+    QColor newSourceColor;
+    QColor newDestColor;
+    QString newColorID;
+    bool shouldDelete = false;
 };
 
 #endif // COLORWIDGET_H

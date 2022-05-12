@@ -18,8 +18,11 @@ public:
     explicit ThemeWidget(QWidget *parent = nullptr);
     ~ThemeWidget();
     void setThemeReference(Theme* _themeRef);
-    void setText(QString _labelText, QString _buttonText);
+    void setText(QString _buttonText);
 //    void setMainWindowRef(Ui::MainWindow* mainWin);
+
+public slots:
+    void updateThemeName(QString newName);
 
 private slots:
     void on_theme_button_clicked();

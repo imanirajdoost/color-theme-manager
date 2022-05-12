@@ -5,6 +5,65 @@ XMLReader::XMLReader()
 
 }
 
+void XMLReader::write(SystemStat* stat)
+{
+    QFile xmlFile("xmlSettings.xml");
+    if (!xmlFile.open(QFile::ReadWrite | QFile::Text ))
+    {
+        qDebug() << "Already opened or there is another issue";
+        xmlFile.close();
+    }
+    QTextStream xmlContent(&xmlFile);
+
+    QDomDocument document;
+
+    //make the root element
+    QDomElement root = document.createElement("ColorManagerSettings");
+    //add it to document
+    document.appendChild(root);
+
+    for(int i = 0; i < stat->linksToFiles->count(); i++)
+    {
+        QDomElement link = document.createElement("link");
+        link.setAttribute("path",stat->linksToFiles->at(i));
+        root.appendChild(link);
+    }
+
+    xmlContent << document.toString();
+}
+
+SystemStat* XMLReader::getLastStat()
+{
+    SystemStat* stat = new SystemStat();
+    QDomDocument myXML;
+        QFile xmlFile("xmlSettings.xml");
+        if (!xmlFile.open(QIODevice::ReadOnly ))
+        {
+            // Error while loading file
+        }
+        myXML.setContent(&xmlFile);
+        xmlFile.close();
+
+        QDomElement root = myXML.documentElement();
+        QDomElement node = root.firstChild().toElement();
+
+        QString datas = "";
+
+        while(node.isNull() == false)
+        {
+            qDebug() << node.tagName();
+            if(node.tagName() == "link"){
+                while(!node.isNull()){
+                    QString path = node.attribute("path","");
+                    stat->linksToFiles->push_back(path);
+                    node = node.nextSibling().toElement();
+                }
+            }
+            node = node.nextSibling().toElement();
+        }
+        return stat;
+}
+
 void XMLReader::update(Theme* _theme, QString content)
 {
     QDomDocument xmlBOM;
@@ -43,7 +102,7 @@ void XMLReader::update(Theme* _theme, QString content)
             //ColorPair cp(id,source,target);
             m_set.emplace(id,source,target);
 
-//            std::cout << "KIR: " + ColorPair::toRGBA(ColorPair::fromRGBA(source)).toStdString() << std::endl;
+            //            std::cout << "KIR: " + ColorPair::toRGBA(ColorPair::fromRGBA(source)).toStdString() << std::endl;
             ColorPair* pair = new ColorPair(id,ColorPair::fromRGBA(source),ColorPair::fromRGBA(target));
             _theme->addColorPair(pair);
         }
@@ -80,8 +139,8 @@ void XMLReader::read(QFile& file, QList<Theme*>* listOfThemes)
     QString Type=root.tagName();
 
     // Display root data
-//    std::cout << "Type  = " << Type.toStdString().c_str() << std::endl;
-//    std::cout << std::endl;
+    //    std::cout << "Type  = " << Type.toStdString().c_str() << std::endl;
+    //    std::cout << std::endl;
 
     // Get the first child of the root (Markup color is expected)
     QDomElement Component=root.firstChild().toElement();
@@ -111,7 +170,7 @@ void XMLReader::read(QFile& file, QList<Theme*>* listOfThemes)
             //ColorPair cp(id,source,target);
             m_set.emplace(id,source,target);
 
-//            std::cout << "KIR: " + ColorPair::toRGBA(ColorPair::fromRGBA(source)).toStdString() << std::endl;
+            //            std::cout << "KIR: " + ColorPair::toRGBA(ColorPair::fromRGBA(source)).toStdString() << std::endl;
             ColorPair* pair = new ColorPair(id,ColorPair::fromRGBA(source),ColorPair::fromRGBA(target));
             theme->addColorPair(pair);
         }

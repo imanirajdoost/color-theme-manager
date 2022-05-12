@@ -18,10 +18,20 @@ MainWindow::MainWindow(QWidget *parent)
     scrollArea->setVerticalScrollBarPolicy (Qt::ScrollBarAsNeeded);
     scrollArea->setWidgetResizable (true);
     scrollArea->setWidget (scrollAreaContent);
+    scrollArea->setAlignment(Qt::AlignTop);
 
     QHBoxLayout* themes_container = ui->themeLayout;
     themes_container->addLayout(themeList);
     themes_container->addWidget(scrollArea);
+
+    //Load the last session
+    XMLReader xmlManager;
+    stat = xmlManager.getLastStat();
+    if(stat != NULL && stat->linksToFiles->count() > 0)
+    {
+        for(int i=0; i < stat->linksToFiles->count(); i++)
+            openFile(stat->linksToFiles->at(i),false);
+    }
 }
 
 void MainWindow::update_themes()
@@ -35,7 +45,7 @@ void MainWindow::update_themes()
         ThemeWidget* themeWidget = new ThemeWidget(this);
         themeWidget->setThemeReference(listOfThemes->at(i));
 //        themeWidget->setMainWindowRef(this);
-        connect(this,SLOT(updateSingleTheme(Theme*)),themeWidget,SIGNAL(updateTheme(Theme*)));
+//        connect(this,SLOT(updateSingleTheme(Theme*)),themeWidget,SIGNAL(updateTheme(Theme*)));
         themeList->addWidget(themeWidget);
     }
 }
@@ -56,24 +66,28 @@ void MainWindow::dropEvent(QDropEvent *e)
 {
     foreach (const QUrl &url, e->mimeData()->urls()) {
         QString fileName = url.toLocalFile();
-        openFile(fileName);
+        openFile(fileName,true);
     }
 }
 
 void MainWindow::on_button_import_theme_clicked()
 {
     QString fileName = QFileDialog::getOpenFileName(this,tr("Open file"), "", tr("XML files (*.xml)"));
-    openFile(fileName);
+    openFile(fileName,true);
 }
 
-void MainWindow::openFile(QString fileName)
+void MainWindow::openFile(QString fileName, bool shouldWrite)
 {
     if(!fileName.isEmpty()) {
         XMLReader reader;
         QFile file;
         file.setFileName(fileName);
         reader.read(file,listOfThemes);
-
+        if(shouldWrite)
+        {
+        stat->linksToFiles->push_back(fileName);
+        reader.write(stat);
+        }
         update_themes();
     }
     else {

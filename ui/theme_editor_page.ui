@@ -15,14 +15,26 @@
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout_3">
    <item>
-    <layout class="QVBoxLayout" name="verticalLayout" stretch="1,10,2">
+    <layout class="QVBoxLayout" name="verticalLayout" stretch="1,10,2,0">
      <item>
-      <layout class="QHBoxLayout" name="horizontalLayout" stretch="1,1,5,0,1,5">
+      <layout class="QHBoxLayout" name="horizontalLayout" stretch="1,1,5,0,0,1,5">
        <property name="spacing">
         <number>10</number>
        </property>
        <item>
-        <widget class="QLabel" name="label_2">
+        <widget class="QLabel" name="themeIcon">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>50</width>
+           <height>50</height>
+          </size>
+         </property>
          <property name="text">
           <string/>
          </property>
@@ -32,9 +44,9 @@
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="pushButton_5">
+        <widget class="QPushButton" name="editIconButton">
          <property name="text">
-          <string>Modifier image</string>
+          <string>Edit icon</string>
          </property>
         </widget>
        </item>
@@ -50,6 +62,13 @@
           </size>
          </property>
         </spacer>
+       </item>
+       <item>
+        <widget class="QLabel" name="label">
+         <property name="text">
+          <string>Theme Name:</string>
+         </property>
+        </widget>
        </item>
        <item>
         <widget class="QTextEdit" name="themeNameEditText">
@@ -126,7 +145,7 @@
             </size>
            </property>
            <property name="text">
-            <string>Importer (màj) depuis internet</string>
+            <string>Import/Update from Internet</string>
            </property>
           </widget>
          </item>
@@ -145,7 +164,7 @@
             </size>
            </property>
            <property name="text">
-            <string>Appliquer sur un fichier</string>
+            <string>Apply colors on a file</string>
            </property>
           </widget>
          </item>
@@ -164,7 +183,7 @@
             </size>
            </property>
            <property name="text">
-            <string>Sauvegarder le thème</string>
+            <string>Save the theme</string>
            </property>
           </widget>
          </item>
@@ -183,7 +202,7 @@
             </size>
            </property>
            <property name="text">
-            <string>Ajouter une couleur</string>
+            <string>Add a new color</string>
            </property>
           </widget>
          </item>
@@ -203,17 +222,23 @@
          </property>
         </widget>
        </item>
-       <item>
-        <widget class="QPlainTextEdit" name="plainTextEdit_2">
-         <property name="readOnly">
-          <bool>true</bool>
-         </property>
-         <property name="plainText">
-          <string>Progress</string>
-         </property>
-        </widget>
-       </item>
       </layout>
+     </item>
+     <item>
+      <widget class="QProgressBar" name="progressBar">
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>10</height>
+        </size>
+       </property>
+       <property name="value">
+        <number>100</number>
+       </property>
+       <property name="textVisible">
+        <bool>false</bool>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>

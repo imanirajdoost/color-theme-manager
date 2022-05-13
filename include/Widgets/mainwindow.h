@@ -27,9 +27,11 @@ public:
 
 private slots:
     void on_button_import_theme_clicked();
-    void add_error(QString m);
+    void add_message(QString m,QString color);
 
     void on_button_create_theme_clicked();
+
+    void on_saveThemeButton_clicked();
 
 public slots:
     void updateSingleTheme(Theme* _theme);

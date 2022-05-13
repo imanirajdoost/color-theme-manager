@@ -22,7 +22,7 @@
     </widget>
    </item>
    <item>
-    <layout class="QHBoxLayout" name="h" stretch="0,6,5,1,1,5,1,1,5,1">
+    <layout class="QHBoxLayout" name="h" stretch="0,6,5,1,1,5,1,1,2,0,1">
      <item>
       <widget class="QPushButton" name="undoColorIdButton">
        <property name="sizePolicy">
@@ -220,6 +220,21 @@
         </size>
        </property>
       </spacer>
+     </item>
+     <item>
+      <widget class="QLabel" name="willBeDeletedText">
+       <property name="font">
+        <font>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: rgba(0, 0, 0, 0);</string>
+       </property>
+       <property name="text">
+        <string>WILL BE DELETED </string>
+       </property>
+      </widget>
      </item>
      <item>
       <widget class="QPushButton" name="deleteColorButton">

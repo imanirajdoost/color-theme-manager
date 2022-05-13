@@ -23,7 +23,8 @@ void ThemeWidget::on_theme_button_clicked()
     wdg->show();
     wdg->receiveThemeData(myTheme);
     connect(wdg,SIGNAL(sendNewThemeName(QString)),this,SLOT(updateThemeName(QString)));
-//    wdg->setMainWindowRef(_mainWindow);
+    connect(wdg,SIGNAL(sendNewThemeIcon(QString)),this,SLOT(updateThemeIcon(QString)));
+    //    wdg->setMainWindowRef(_mainWindow);
     // connect(this,SIGNAL(sendThemeData(Theme*)),wdg,SLOT(receiveThemeData(Theme*)));
     // emit sendThemeData(myTheme);
 
@@ -37,6 +38,16 @@ void ThemeWidget::on_theme_button_clicked()
 void ThemeWidget::updateThemeName(QString newName)
 {
     setText(newName);
+}
+
+void ThemeWidget::updateThemeIcon(QString themeIcon)
+{
+    QImage image;
+    if(image.load(themeIcon))
+    {
+        image.scaledToWidth(ui->theme_image->width(), Qt::SmoothTransformation);
+        ui->theme_image->setPixmap(QPixmap::fromImage(image));
+    }
 }
 
 void ThemeWidget::setThemeReference(Theme* _themeRef)

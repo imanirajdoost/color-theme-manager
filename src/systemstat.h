@@ -10,6 +10,7 @@ public:
     SystemStat();
 
     QList<QString>* linksToFiles;
+    QList<QString>* linksToIcons;
 };
 
 #endif // SYSTEMSTAT_H

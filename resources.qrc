@@ -4,5 +4,6 @@
         <file>edit.png</file>
         <file>undo.png</file>
         <file>delete.png</file>
+        <file>trans.png</file>
     </qresource>
 </RCC>

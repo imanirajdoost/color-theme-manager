@@ -23,6 +23,7 @@
 #include <QtNetwork/QNetworkAccessManager>
 #include <QtNetwork/QNetworkRequest>
 #include <QtNetwork/QNetworkReply>
+#include <regex>
 
 
 namespace Ui {
@@ -52,23 +53,38 @@ private slots:
     void on_saveThemeButton_clicked();
 
     void on_editIconButton_clicked();
+    void downloadFinished();
+    void downloadProgress(qint64 pr1, qint64 pr2);
+
+    void on_undoThemeNameButton_clicked();
 
 signals:
     void saveAllColors();
     void sendNewThemeName(QString newName);
+    void sendNewThemeIcon(QString newIcon);
 
 private:
     Ui::theme_editor_page *ui;
     QList<ColorPair*>* listOfColors;
     QGridLayout* colorList;
-    void theme_editor_page::update_colors();
+    void update_colors();
+    void add_message(QString m, QString color);
+    void hideProgress();
+    bool isUrlValid(QString url);
+    void applyOnFile(QString fileName);
     Theme* currentTheme;
     bool isThemeNameChanged = false;
+    bool isThemeIconChanged = false;
+    QString newThemeIcon;
 
     //    Ui::MainWindow* _mainWindow;
 
-    public slots:
+public slots:
     void deleteColor(ColorPair* col);
+
+protected:
+    void dropEvent(QDropEvent *event) override;
+    void dragEnterEvent(QDragEnterEvent *event) override;
 
 };
 

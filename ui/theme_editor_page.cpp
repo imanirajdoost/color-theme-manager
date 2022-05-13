@@ -6,6 +6,8 @@ theme_editor_page::theme_editor_page(QWidget *parent) :
     ui(new Ui::theme_editor_page)
 {
     ui->setupUi(this);
+    // For drag and drops
+    setAcceptDrops(true);
 
     colorList = new QGridLayout;
     listOfColors = new QList<ColorPair*>();
@@ -22,15 +24,17 @@ theme_editor_page::theme_editor_page(QWidget *parent) :
     colors_container->addLayout(colorList);
     colors_container->addWidget(scrollArea);
 
-    ui->editThemeNameButton->setVisible(false);
+//    ui->undoThemeNameButton->setVisible(false);
+    ui->undoThemeNameButton->setStyleSheet("border-image: url(:/icons/trans.png);");
+    hideProgress();
 }
 
 void theme_editor_page::update_colors()
 {
     for(int i =0; i < colorList->count(); i++) {
         ColorWidget* colW = (ColorWidget*)colorList->itemAt(i);
-        disconnect(this,SIGNAL(saveAllColors()),colW,SLOT(saveColor()));
-        disconnect(colW,SIGNAL(deleteMe(ColorPair*)),this,SLOT(deleteColor(ColorPair*)));
+        //        disconnect(this,SIGNAL(saveAllColors()),colW,SLOT(saveColor()));
+        //        disconnect(colW,SIGNAL(deleteMe(ColorPair*)),this,SLOT(deleteColor(ColorPair*)));
         colorList->itemAt(i)->widget()->deleteLater();
         colorList->removeWidget(colorList->itemAt(i)->widget());
     }
@@ -53,6 +57,15 @@ void theme_editor_page::receiveThemeData(Theme* theme){
     currentTheme = theme;
     // std::cout << "Theme name: " << currentTheme.themeName.toStdString() << std::endl;
     ui->themeNameEditText->setText(currentTheme->themeName);
+    if(QString::compare(currentTheme->iconPath, "") != 0)
+    {
+        QImage image;
+        if(image.load(currentTheme->iconPath))
+        {
+            image.scaledToWidth(ui->themeIcon->width(), Qt::SmoothTransformation);
+            ui->themeIcon->setPixmap(QPixmap::fromImage(image));
+        }
+    }
     listOfColors = currentTheme->getColorPair();
     update_colors();
 }
@@ -70,21 +83,21 @@ void theme_editor_page::on_addColorButton_clicked()
     colorList->addWidget(colorWidget);
 }
 
-
-void theme_editor_page::on_applyOnFileButton_clicked()
+void theme_editor_page::applyOnFile(QString fileName)
 {
-    QString fileName = QFileDialog::getOpenFileName(this,tr("Open file"), "", tr("Text Files (*.xml *.txt *.php *.html *.htm)"));
     QByteArray fileData;
     QFile file(fileName);
     if(file.open(QIODevice::ReadWrite))
     {
+        add_message("Applying colors on the selected file...","black");
+
         int skipped = 0;
         int replaced = 0;
 
         fileData = file.readAll(); // read all the data into the byte array
         QString text(fileData); // add to text string for easy string replace
 
-        std::cout << text.toStdString() << std::endl;
+        //        std::cout << text.toStdString() << std::endl;
 
         for (int i=0; i < listOfColors->count(); i++)
         {
@@ -113,31 +126,98 @@ void theme_editor_page::on_applyOnFileButton_clicked()
 
         file.close(); // close the file handle.
 
+        add_message("Total colors replaced: " + QString::number(replaced),"black");
+        add_message("Total colors skipped: " + QString::number(skipped),"black");
+
         QMessageBox *msgBox = new QMessageBox(this);
         QString txt = "Task finished!\nTotal colors replaced: " + QString::number(replaced) +
                 "\nTotal skipped: " + QString::number(skipped);
         msgBox->setText(txt);
+        msgBox->setWindowTitle("Info");
         msgBox->exec();
     }
     else
-        std::cout << "Error openning file" << std::endl;
+        add_message("Error openning the file", "red");
+}
 
 
+void theme_editor_page::on_applyOnFileButton_clicked()
+{
+    QString fileName = QFileDialog::getOpenFileName(this,tr("Open file"), "", tr("Text Files (*.xml *.txt *.php *.html *.htm)"));
+    applyOnFile(fileName);
+}
+
+void theme_editor_page::add_message(QString m, QString color)
+{
+    QString errorHtml = "<font color=\"" + color + "\">";
+    QString endHtml = "</font>";
+    ui->errorText->appendHtml("[" + QTime::currentTime().toString() + "] "+ errorHtml + m + endHtml);
+}
+
+void theme_editor_page::downloadFinished()
+{
+    add_message(tr("Download finished"),"black");
+    hideProgress();
+}
+
+void theme_editor_page::downloadProgress(qint64 ist, qint64 max)
+{
+    ui->progressBar->setVisible(true);
+    ui->progressBar->setRange(0,max);
+    ui->progressBar->setValue(ist);
+    if(max < 0)
+        hideProgress();
+}
+
+void theme_editor_page::hideProgress()
+{
+    ui->progressBar->setVisible(false);
+}
+
+bool theme_editor_page::isUrlValid(QString url)
+{
+    // regex pattern
+    std::string pattern = ".*\\..*";
+
+    // Construct regex object
+    std::regex url_regex(pattern);
+
+    // An url-string for example
+    std::string my_url = url.toStdString();
+
+    // Check for match
+    if (std::regex_match(my_url, url_regex) == true) {
+      return true;
+    }
+    return false;
 }
 
 void theme_editor_page::on_getFromWebButton_clicked()
 {
     bool ok;
-    // Ask for birth date as a string.
-    QString text = QInputDialog::getText(this, "Download from Internet",
-                                         "Paste the link here:", QLineEdit::Normal,
+    QString text = QInputDialog::getText(this, tr("Download from Internet"),
+                                         tr("Paste the link here:"), QLineEdit::Normal,
                                          "", &ok);
     if (ok && !text.isEmpty()) {
         std::cout << text.toStdString() << std::endl;
         QUrl* url = new QUrl(text);
-        if(url->isValid())
+        if(url->isValid() && isUrlValid(url->toString()))
         {
+            add_message("Starting download...","black");
             std::cout << "Url is valid" << std::endl;
+
+            bool shouldReplace = false;
+            QMessageBox::StandardButton reply;
+            reply = QMessageBox::question(this, "Overwrite Colors",
+                                          "Would you like to overwrite colors with the same id with "
+                                          "the ones that exist in the link?\n"
+                                          "If you choose YES, colors will be replaced,\n"
+                                          "If you choose NO, all colors will be added as new colors",
+                                          QMessageBox::Yes|QMessageBox::No);
+             if (reply == QMessageBox::Yes) {
+                shouldReplace = true;
+             }
+
             QNetworkAccessManager manager;
             QNetworkRequest request(*url);
             request.setAttribute(QNetworkRequest::FollowRedirectsAttribute, true);
@@ -145,18 +225,27 @@ void theme_editor_page::on_getFromWebButton_clicked()
             QNetworkReply *response = manager.get(request);
             QEventLoop event;
             connect(response, SIGNAL(finished()), &event, SLOT(quit()));
+            connect(response, SIGNAL(finished()), this, SLOT(downloadFinished()));
+            connect(response, SIGNAL(downloadProgress(qint64,qint64)), this, SLOT(downloadProgress(qint64,qint64)));
             event.exec();
             QString content = response->readAll();
             std::cout << content.toStdString() << std::endl;
 
-            //TODO: Now read the colors into the current theme
             XMLReader reader;
-            reader.update(currentTheme, content);
+            reader.update(currentTheme, content, shouldReplace);
 
             listOfColors = currentTheme->getColorPair();
 
             update_colors();
         }
+        else
+        {
+            add_message(tr("Invalid link, make sure you use a link that points to a valid theme file with colors"),"red");
+        }
+    }
+    else
+    {
+        add_message(tr("Invalid link, make sure you use a link that points to a valid theme file with colors"),"red");
     }
 }
 
@@ -164,12 +253,14 @@ void theme_editor_page::on_themeNameEditText_textChanged()
 {
     QString newThemeName = ui->themeNameEditText->toPlainText();
     if(QString::compare(currentTheme->themeName,newThemeName)) {
-        ui->editThemeNameButton->setVisible(true);
+//        ui->undoThemeNameButton->setVisible(true);
+            ui->undoThemeNameButton->setStyleSheet("border-image: url(:/icons/undo.png);");
         ui->themeNameEditText->setStyleSheet(QString("background-color: rgb(255, 142, 144);"));
         isThemeNameChanged = true;
     }
     else {
-        ui->editThemeNameButton->setVisible(false);
+//        ui->undoThemeNameButton->setVisible(false);
+            ui->undoThemeNameButton->setStyleSheet("border-image: url(:/icons/trans.png);");
         ui->themeNameEditText->setStyleSheet(QString("background-color: rgb(255, 255, 255);"));
         isThemeNameChanged = false;
     }
@@ -178,10 +269,7 @@ void theme_editor_page::on_themeNameEditText_textChanged()
 
 void theme_editor_page::on_editThemeNameButton_clicked()
 {
-    ui->themeNameEditText->setText(currentTheme->themeName);
-    isThemeNameChanged = false;
-    ui->editThemeNameButton->setVisible(false);
-    ui->themeNameEditText->setStyleSheet(QString("background-color: rgb(255, 255, 255);"));
+
 }
 
 void theme_editor_page::on_saveThemeButton_clicked()
@@ -190,6 +278,12 @@ void theme_editor_page::on_saveThemeButton_clicked()
     {
         currentTheme->themeName = ui->themeNameEditText->toPlainText();
         emit sendNewThemeName(currentTheme->themeName);
+    }
+    if(isThemeIconChanged)
+    {
+        currentTheme->iconPath = newThemeIcon;
+        emit sendNewThemeIcon(newThemeIcon);
+        isThemeIconChanged = false;
     }
 
     emit saveAllColors();
@@ -214,10 +308,37 @@ void theme_editor_page::on_editIconButton_clicked()
         QImage image;
         if(image.load(fileName))
         {
+            newThemeIcon = fileName;
             image.scaledToWidth(ui->themeIcon->width(), Qt::SmoothTransformation);
-//            image.scaledToHeight(ui->themeIcon->height(), Qt::SmoothTransformation);
+            //            image.scaledToHeight(ui->themeIcon->height(), Qt::SmoothTransformation);
             ui->themeIcon->setPixmap(QPixmap::fromImage(image));
+            isThemeIconChanged = true;
         }
+    }
+}
+
+
+void theme_editor_page::on_undoThemeNameButton_clicked()
+{
+    ui->themeNameEditText->setText(currentTheme->themeName);
+    isThemeNameChanged = false;
+//    ui->undoThemeNameButton->setVisible(false);
+        ui->undoThemeNameButton->setStyleSheet("border-image: url(:/icons/trans.png);");
+    ui->themeNameEditText->setStyleSheet(QString("background-color: rgb(255, 255, 255);"));
+}
+
+void theme_editor_page::dragEnterEvent(QDragEnterEvent *e)
+{
+    if (e->mimeData()->hasUrls()) {
+        e->acceptProposedAction();
+    }
+}
+
+void theme_editor_page::dropEvent(QDropEvent *e)
+{
+    foreach (const QUrl &url, e->mimeData()->urls()) {
+        QString fileName = url.toLocalFile();
+        applyOnFile(fileName);
     }
 }
 

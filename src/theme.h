@@ -11,6 +11,8 @@ public:
     void setName(QString _name);
     QList<ColorPair*>* getColorPair();
     QString themeName;
+    QString iconPath;
+    QString themePath;
 private:
     QList<ColorPair*>* colorpairList;
 };

@@ -11,10 +11,17 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>Color Theme Manager</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QVBoxLayout" name="verticalLayout" stretch="5,1,1,0">
+   <layout class="QVBoxLayout" name="verticalLayout" stretch="0,5,1,0,1,0">
+    <item>
+     <widget class="QLabel" name="label_2">
+      <property name="text">
+       <string>Themes List</string>
+      </property>
+     </widget>
+    </item>
     <item>
      <layout class="QHBoxLayout" name="themeLayout"/>
     </item>
@@ -63,12 +70,12 @@
          </size>
         </property>
         <property name="text">
-         <string>Import a theme</string>
+         <string>Import a theme (or drag and drop)</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="button_save_theme">
+       <widget class="QPushButton" name="saveThemeButton">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
           <horstretch>0</horstretch>
@@ -89,6 +96,13 @@
      </layout>
     </item>
     <item>
+     <widget class="QLabel" name="label">
+      <property name="text">
+       <string>Program Messages</string>
+      </property>
+     </widget>
+    </item>
+    <item>
      <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="0">
       <property name="spacing">
        <number>7</number>
@@ -105,6 +119,9 @@
          <bool>true</bool>
         </property>
         <property name="plainText">
+         <string/>
+        </property>
+        <property name="placeholderText">
          <string>Warnings and Errors</string>
         </property>
        </widget>
@@ -120,7 +137,7 @@
        </size>
       </property>
       <property name="value">
-       <number>100</number>
+       <number>0</number>
       </property>
       <property name="textVisible">
        <bool>false</bool>

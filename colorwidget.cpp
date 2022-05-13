@@ -25,9 +25,14 @@ void ColorWidget::setColorRef(ColorPair* c)
 
     updateSource(currentColor->getColorSource());
     updateDestination(currentColor->getColorTarget());
-    ui->undoColorSourceButton->setVisible(false);
-    ui->undoColorDestButton->setVisible(false);
-    ui->undoColorIdButton->setVisible(false);
+//    ui->undoColorSourceButton->setVisible(false);
+//    ui->undoColorDestButton->setVisible(false);
+//    ui->undoColorIdButton->setVisible(false);
+    ui->undoColorSourceButton->setStyleSheet("border-image: url(:/icons/trans.png);");
+    ui->undoColorDestButton->setStyleSheet("border-image: url(:/icons/trans.png);");
+    ui->undoColorIdButton->setStyleSheet("border-image: url(:/icons/trans.png);");
+    ui->willBeDeletedText->setStyleSheet("color: rgba(0, 0, 0, 0);");
+//    ui->willBeDeletedText->setVisible(false);
 }
 
 void ColorWidget::updateSource(QColor newColor) {
@@ -51,7 +56,8 @@ void ColorWidget::changeSourceColor(QColor sourceCol) {
     if(QString::compare(ColorPair::toRGBA(sourceCol),ColorPair::toRGBA(currentColor->getColorSource())))
     {
         isSourceColorChanged = true;
-        ui->undoColorSourceButton->setVisible(true);
+//        ui->undoColorSourceButton->setVisible(true);
+        ui->undoColorSourceButton->setStyleSheet("border-image: url(:/icons/undo.png);");
         // Make the button "visible"
         //        ui->undoColorSourceButton->setPalette(QPalette()); // Back to the default palette
         //        ui->undoColorSourceButton->setEnabled(true);
@@ -62,7 +68,8 @@ void ColorWidget::changeSourceColor(QColor sourceCol) {
     else
     {
         isSourceColorChanged = false;
-        ui->undoColorSourceButton->setVisible(false);
+//        ui->undoColorSourceButton->setVisible(false);
+        ui->undoColorSourceButton->setStyleSheet("border-image: url(:/icons/trans.png);");
         // Make the button "invisible"
         //        QBrush tb(Qt::transparent); // Transparent brush, solid pattern
         //        ui->undoColorSourceButton->setPalette(QPalette(tb, tb, tb, tb, tb, tb, tb, tb, tb)); // Set every color roles to the transparent brush
@@ -79,12 +86,14 @@ void ColorWidget::changeDestinationColor(QColor destCol) {
     if(QString::compare(ColorPair::toRGBA(destCol),ColorPair::toRGBA(currentColor->getColorTarget())))
     {
         isDestColorChanged = true;
-        ui->undoColorDestButton->setVisible(true);
+//        ui->undoColorDestButton->setVisible(true);
+        ui->undoColorDestButton->setStyleSheet("border-image: url(:/icons/undo.png);");
         ui->colorDestText->setStyleSheet(QString("background-color: rgb(255, 142, 144);"));
     }
     else {
         isDestColorChanged = false;
-        ui->undoColorDestButton->setVisible(false);
+//        ui->undoColorDestButton->setVisible(false);
+        ui->undoColorDestButton->setStyleSheet("border-image: url(:/icons/trans.png);");
         ui->colorDestText->setStyleSheet(QString("background-color: rgb(255, 255, 255);"));
     }
     //currentColor->setColorTarget(destCol);
@@ -131,7 +140,8 @@ void ColorWidget::on_undoColorSourceButton_clicked()
     if(isSourceColorChanged)
     {
         ui->colorSourceText->setStyleSheet(QString("background-color: rgb(255, 255, 255);"));
-        ui->undoColorSourceButton->setVisible(false);
+//        ui->undoColorSourceButton->setVisible(false);
+        ui->undoColorSourceButton->setStyleSheet("border-image: url(:/icons/trans.png);");
         newSourceColor = currentColor->getColorSource();
         ui->colorSourceText->setPlainText(ColorPair::toRGBA(newSourceColor));
         updateSource(newSourceColor);
@@ -145,7 +155,8 @@ void ColorWidget::on_undoColorDestButton_clicked()
     if(isDestColorChanged)
     {
         ui->colorDestText->setStyleSheet(QString("background-color: rgb(255, 255, 255);"));
-        ui->undoColorDestButton->setVisible(false);
+//        ui->undoColorDestButton->setVisible(false);
+        ui->undoColorDestButton->setStyleSheet("border-image: url(:/icons/trans.png);");
         newDestColor = currentColor->getColorTarget();
         ui->colorDestText->setPlainText(ColorPair::toRGBA(newDestColor));
         updateDestination(newDestColor);
@@ -160,9 +171,13 @@ void ColorWidget::on_deleteColorButton_clicked()
     if(shouldDelete)
     {
         ui->deleteColorButton->setStyleSheet("border-image:url(:/icons/undo.png);");
+//        ui->willBeDeletedText->setVisible(true);
+        ui->willBeDeletedText->setStyleSheet("color: rgba(0, 0, 0, 255);");
     }
     else {
         ui->deleteColorButton->setStyleSheet("border-image:url(:/icons/delete.png);");
+//        ui->willBeDeletedText->setVisible(false);
+        ui->willBeDeletedText->setStyleSheet("color: rgba(0, 0, 0, 0);");
     }
 }
 
@@ -173,7 +188,8 @@ void ColorWidget::on_undoColorIdButton_clicked()
     {
         newColorID = currentColor->getId();
         ui->colorIdTextEdit->setText(newColorID);
-        ui->undoColorIdButton->setVisible(false);
+//        ui->undoColorIdButton->setVisible(false);
+        ui->undoColorIdButton->setStyleSheet("border-image: url(:/icons/trans.png);");
         ui->colorIdTextEdit->setStyleSheet(QString("background-color: rgb(255, 255, 255);"));
         isColorIdChanged = false;
     }
@@ -184,12 +200,14 @@ void ColorWidget::on_colorIdTextEdit_textChanged()
 {
     newColorID = ui->colorIdTextEdit->toPlainText();
     if(QString::compare(currentColor->getId(),newColorID)) {
-        ui->undoColorIdButton->setVisible(true);
+//        ui->undoColorIdButton->setVisible(true);
+        ui->undoColorIdButton->setStyleSheet("border-image: url(:/icons/undo.png);");
         ui->colorIdTextEdit->setStyleSheet(QString("background-color: rgb(255, 142, 144);"));
         isColorIdChanged = true;
     }
     else {
-        ui->undoColorIdButton->setVisible(false);
+//        ui->undoColorIdButton->setVisible(false);
+        ui->undoColorIdButton->setStyleSheet("border-image: url(:/icons/trans.png);");
         ui->colorIdTextEdit->setStyleSheet(QString("background-color: rgb(255, 255, 255);"));
         isColorIdChanged = false;
     }

@@ -32,7 +32,6 @@ private slots:
 
 //signals:
     //void sendThemeData(Theme*);
-    void on_pushButton_clicked();
 
 signals:
     void updateTheme(Theme*);

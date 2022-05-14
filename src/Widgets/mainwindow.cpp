@@ -172,8 +172,8 @@ void MainWindow::on_button_create_theme_clicked()
     updateSingleTheme(newTheme);
 }
 
-void MainWindow::on_saveThemeButton_clicked()
-{
+//void MainWindow::on_saveThemeButton_clicked()
+//{
 //    stat = new SystemStat();
 //    add_message("Saving themes...","black");
 //    XMLReader reader;
@@ -218,5 +218,5 @@ void MainWindow::on_saveThemeButton_clicked()
 //        reader.writeTheme(newTheme);
 //    }
 //    add_message("Themes saved on disk","black");
-}
+//}
 

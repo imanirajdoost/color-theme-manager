@@ -49,8 +49,6 @@ private slots:
 
     void on_themeNameEditText_textChanged();
 
-    void on_editThemeNameButton_clicked();
-
     void on_saveThemeButton_clicked();
 
     void on_editIconButton_clicked();

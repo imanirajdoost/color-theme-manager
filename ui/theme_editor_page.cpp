@@ -51,8 +51,7 @@ void theme_editor_page::update_colors()
 
 void theme_editor_page::setColorEdited(bool edited)
 {
-    std::cout << "TESTIIIIING" << std::endl;
-    std::cout << "EDITED: " << (edited ? "1" : "0") << std::endl;
+//    std::cout << "EDITED: " << (edited ? "1" : "0") << std::endl;
     isColorsChanged = edited;
 }
 
@@ -275,12 +274,6 @@ void theme_editor_page::on_themeNameEditText_textChanged()
     }
 }
 
-
-void theme_editor_page::on_editThemeNameButton_clicked()
-{
-
-}
-
 void theme_editor_page::on_saveThemeButton_clicked()
 {
     if(isThemeNameChanged)
@@ -319,6 +312,7 @@ void theme_editor_page::on_saveThemeButton_clicked()
 
     emit saveAllColors();
     emit sendUpdatedTheme(currentTheme);
+    isColorsChanged = false;
     this->close();
 }
 

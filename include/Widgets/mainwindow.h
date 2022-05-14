@@ -31,7 +31,7 @@ private slots:
 
     void on_button_create_theme_clicked();
 
-    void on_saveThemeButton_clicked();
+//    void on_saveThemeButton_clicked();
 
 public slots:
     void updateSingleTheme(Theme* _theme);

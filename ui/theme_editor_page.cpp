@@ -203,7 +203,9 @@ bool theme_editor_page::isUrlValid(QString url)
 void theme_editor_page::on_getFromWebButton_clicked()
 {
     bool ok;
-    QString text = QInputDialog::getText(this, tr("Download from Internet"),
+    QInputDialog dialog;
+    dialog.setFixedSize(500,200);
+    QString text = dialog.getText(this, tr("Download from Internet"),
                                          tr("Paste the link here:"), QLineEdit::Normal,
                                          "", &ok);
     if (ok && !text.isEmpty()) {

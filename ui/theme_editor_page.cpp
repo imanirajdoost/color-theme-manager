@@ -24,7 +24,7 @@ theme_editor_page::theme_editor_page(QWidget *parent) :
     colors_container->addLayout(colorList);
     colors_container->addWidget(scrollArea);
 
-//    ui->undoThemeNameButton->setVisible(false);
+    //    ui->undoThemeNameButton->setVisible(false);
     ui->undoThemeNameButton->setStyleSheet("border-image: url(:/icons/trans.png);");
     hideProgress();
 }
@@ -187,7 +187,7 @@ bool theme_editor_page::isUrlValid(QString url)
 
     // Check for match
     if (std::regex_match(my_url, url_regex) == true) {
-      return true;
+        return true;
     }
     return false;
 }
@@ -214,9 +214,9 @@ void theme_editor_page::on_getFromWebButton_clicked()
                                           "If you choose YES, colors will be replaced,\n"
                                           "If you choose NO, all colors will be added as new colors",
                                           QMessageBox::Yes|QMessageBox::No);
-             if (reply == QMessageBox::Yes) {
+            if (reply == QMessageBox::Yes) {
                 shouldReplace = true;
-             }
+            }
 
             QNetworkAccessManager manager;
             QNetworkRequest request(*url);
@@ -253,14 +253,14 @@ void theme_editor_page::on_themeNameEditText_textChanged()
 {
     QString newThemeName = ui->themeNameEditText->toPlainText();
     if(QString::compare(currentTheme->themeName,newThemeName)) {
-//        ui->undoThemeNameButton->setVisible(true);
-            ui->undoThemeNameButton->setStyleSheet("border-image: url(:/icons/undo.png);");
+        //        ui->undoThemeNameButton->setVisible(true);
+        ui->undoThemeNameButton->setStyleSheet("border-image: url(:/icons/undo.png);");
         ui->themeNameEditText->setStyleSheet(QString("background-color: rgb(255, 142, 144);"));
         isThemeNameChanged = true;
     }
     else {
-//        ui->undoThemeNameButton->setVisible(false);
-            ui->undoThemeNameButton->setStyleSheet("border-image: url(:/icons/trans.png);");
+        //        ui->undoThemeNameButton->setVisible(false);
+        ui->undoThemeNameButton->setStyleSheet("border-image: url(:/icons/trans.png);");
         ui->themeNameEditText->setStyleSheet(QString("background-color: rgb(255, 255, 255);"));
         isThemeNameChanged = false;
     }
@@ -276,7 +276,28 @@ void theme_editor_page::on_saveThemeButton_clicked()
 {
     if(isThemeNameChanged)
     {
+        //Check if file name already exist:
+        QString path = QDir::currentPath() + "/" + ui->themeNameEditText->toPlainText() + ".xml";
+        QFileInfo check_file(path);
+        // check if file exists and if yes: Is it really a file and no directory?
+        if (check_file.exists() && check_file.isFile()) {
+            QMessageBox messageBox;
+            messageBox.critical(this,"Error","A theme with this name already exists, please change the theme name and try again.");
+            messageBox.setFixedSize(500,200);
+            return;
+        }
+        //If file doesn't exist...
         currentTheme->themeName = ui->themeNameEditText->toPlainText();
+        //Rename the file
+        QString oldPath = currentTheme->themePath;
+        std::cout << "Old path: " + oldPath.toStdString() << std::endl;
+        QFileInfo info(oldPath);
+        QDir directory(info.dir());
+        std::cout << "Info File Name: " + info.fileName().toStdString() << std::endl;
+        std::cout << "File directory: " + info.absoluteDir().absolutePath().toStdString() << std::endl;
+        if(directory.rename(info.fileName(),currentTheme->themeName + ".xml"))
+            currentTheme->themePath = info.absoluteDir().absolutePath() + "/" + currentTheme->themeName + ".xml";
+
         emit sendNewThemeName(currentTheme->themeName);
     }
     if(isThemeIconChanged)
@@ -322,8 +343,8 @@ void theme_editor_page::on_undoThemeNameButton_clicked()
 {
     ui->themeNameEditText->setText(currentTheme->themeName);
     isThemeNameChanged = false;
-//    ui->undoThemeNameButton->setVisible(false);
-        ui->undoThemeNameButton->setStyleSheet("border-image: url(:/icons/trans.png);");
+    //    ui->undoThemeNameButton->setVisible(false);
+    ui->undoThemeNameButton->setStyleSheet("border-image: url(:/icons/trans.png);");
     ui->themeNameEditText->setStyleSheet(QString("background-color: rgb(255, 255, 255);"));
 }
 

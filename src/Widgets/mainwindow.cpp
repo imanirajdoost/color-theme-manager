@@ -39,11 +39,14 @@ MainWindow::MainWindow(QWidget *parent)
 
 void MainWindow::update_themes()
 {
-    for(int i =0; i < themeList->count(); i++) {
-        themeList->itemAt(i)->widget()->deleteLater();
-        themeList->removeWidget(themeList->itemAt(i)->widget());
+
+    while(QLayoutItem* item = themeList->layout()->takeAt(0))
+    {
+        Q_ASSERT( ! item->layout() ); // otherwise the layout will leak
+        delete item->widget();
+        delete item;
     }
-    for(int i =0; i < listOfThemes->size(); i++)
+    for(int i =0; i < listOfThemes->count(); i++)
     {
         ThemeWidget* themeWidget = new ThemeWidget(this);
         themeWidget->setThemeReference(listOfThemes->at(i));
@@ -171,7 +174,7 @@ void MainWindow::on_saveThemeButton_clicked()
         QString newPath = newTheme->themePath;
         if(QString::compare(newPath,"") == 0)
         {
-//            newPath = listOfThemes->at(i)->themeName + ".xml";
+            //            newPath = listOfThemes->at(i)->themeName + ".xml";
             QString fileName = QDir::currentPath() + "/" + newTheme->themeName + ".xml";
             std::cout << "FILE NAME: " << fileName.toStdString() << std::endl;
             int counter = 0;
@@ -200,8 +203,8 @@ void MainWindow::on_saveThemeButton_clicked()
             else
                 add_message("Theme saved on disk at " + newTheme->themePath,"black");
         }
-        stat->linksToFiles->push_back(newPath);
-        stat->linksToIcons->push_back("");
+        //        stat->linksToFiles->push_back(newPath);
+        //        stat->linksToIcons->push_back("");
         reader.write(stat);
         reader.writeTheme(newTheme);
     }

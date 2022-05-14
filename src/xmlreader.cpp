@@ -159,10 +159,10 @@ void XMLReader::update(Theme* _theme, QString content, bool shouldReplace)
 
 
             // Display component data
-            std::cout << "id: " << id.toStdString().c_str() << std::endl;
-            std::cout << "   source  = " << source.toStdString().c_str() << std::endl;
-            std::cout << "   target  = " << target.toStdString().c_str() << std::endl;
-            std::cout << std::endl;
+//            std::cout << "id: " << id.toStdString().c_str() << std::endl;
+//            std::cout << "   source  = " << source.toStdString().c_str() << std::endl;
+//            std::cout << "   target  = " << target.toStdString().c_str() << std::endl;
+//            std::cout << std::endl;
 
             //ColorPair cp(id,source,target);
             m_set.emplace(id,source,target);
@@ -241,10 +241,10 @@ void XMLReader::read(QFile& file, QList<Theme*>* listOfThemes)
 
 
             // Display component data
-            std::cout << "id: " << id.toStdString().c_str() << std::endl;
-            std::cout << "   source  = " << source.toStdString().c_str() << std::endl;
-            std::cout << "   target  = " << target.toStdString().c_str() << std::endl;
-            std::cout << std::endl;
+//            std::cout << "id: " << id.toStdString().c_str() << std::endl;
+//            std::cout << "   source  = " << source.toStdString().c_str() << std::endl;
+//            std::cout << "   target  = " << target.toStdString().c_str() << std::endl;
+//            std::cout << std::endl;
 
             //ColorPair cp(id,source,target);
             m_set.emplace(id,source,target);

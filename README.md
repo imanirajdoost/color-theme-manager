@@ -1,6 +1,8 @@
 # Color Theme Manager
 ### Iman IRAJ DOOST - 22102163
 
+## Using the app
+![Alt Text](other/colorTheme.gif)
 
 ## Implemeted features
 

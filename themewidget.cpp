@@ -73,8 +73,17 @@ void ThemeWidget::setText(QString _buttonText)
     ui->theme_button->setText(_buttonText);
 }
 
-void ThemeWidget::showInGraphicalShell(QWidget *parent, const QString &pathIn)
+void ThemeWidget::showInGraphicalShell()
 {
+    QFileInfo info(myTheme->themePath);
+    QDir directory(info.dir());
+    QString path = info.absoluteDir().absolutePath();
+    QDesktopServices::openUrl(QUrl::fromLocalFile(path));
+}
 
+
+void ThemeWidget::on_pushButton_clicked()
+{
+    showInGraphicalShell();
 }
 

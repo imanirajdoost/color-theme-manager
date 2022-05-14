@@ -42,7 +42,7 @@ private:
     SystemStat* stat;
 
 	Ui::MainWindow *ui;
-    void openFile(QString fileName, bool shouldWrite);
+    void openFile(QString fileName, QString iconPath);
 protected:
     void dropEvent(QDropEvent *event) override;
     void dragEnterEvent(QDragEnterEvent *event) override;

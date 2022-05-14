@@ -192,7 +192,7 @@ void XMLReader::update(Theme* _theme, QString content, bool shouldReplace)
     }//End of while loop
 }
 
-void XMLReader::read(QFile& file, QList<Theme*>* listOfThemes)
+void XMLReader::read(QFile& file, QList<Theme*>* listOfThemes, QString iconPath)
 {
     //Read the xml file
     QDomDocument xmlBOM;
@@ -214,6 +214,9 @@ void XMLReader::read(QFile& file, QList<Theme*>* listOfThemes)
     theme->setName(fName);
     theme->themePath = file.fileName();
     std::cout << "Theme Path: " + theme->themePath.toStdString() << std::endl;
+
+    if(QString::compare(iconPath,"") != 0)
+        theme->iconPath = iconPath;
 
     // Extract the root markup
     QDomElement root=xmlBOM.documentElement();

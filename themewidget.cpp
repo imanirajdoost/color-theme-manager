@@ -24,11 +24,17 @@ void ThemeWidget::on_theme_button_clicked()
     wdg->receiveThemeData(myTheme);
     connect(wdg,SIGNAL(sendNewThemeName(QString)),this,SLOT(updateThemeName(QString)));
     connect(wdg,SIGNAL(sendNewThemeIcon(QString)),this,SLOT(updateThemeIcon(QString)));
+    connect(wdg,SIGNAL(sendUpdatedTheme(Theme*)),this,SLOT(getUpdatedTheme(Theme*)));
     //    wdg->setMainWindowRef(_mainWindow);
     // connect(this,SIGNAL(sendThemeData(Theme*)),wdg,SLOT(receiveThemeData(Theme*)));
     // emit sendThemeData(myTheme);
 
     // this->hide(); //this will disappear main window
+}
+
+void ThemeWidget::getUpdatedTheme(Theme * upTheme)
+{
+    emit updateTheme(upTheme);
 }
 
 //void ThemeWidget::setMainWindowRef(Ui::MainWindow* mainWin) {
@@ -52,11 +58,14 @@ void ThemeWidget::updateThemeIcon(QString themeIcon)
 
 void ThemeWidget::setThemeReference(Theme* _themeRef)
 {
-    std::cout << "setting Theme Ref" << std::endl;
+//    std::cout << "setting Theme Ref" << std::endl;
     myTheme = _themeRef;
     setText(myTheme->themeName);
-
-    QList<ColorPair*>* colors = _themeRef->getColorPair();
+    std::cout << "ICON PATH: " + myTheme->iconPath.toStdString() << std::endl;
+    if(QString::compare(myTheme->iconPath,"") != 0)
+    {
+        updateThemeIcon(myTheme->iconPath);
+    }
 }
 
 void ThemeWidget::setText(QString _buttonText)

@@ -32,7 +32,7 @@ theme_editor_page::theme_editor_page(QWidget *parent) :
 void theme_editor_page::update_colors()
 {
     for(int i =0; i < colorList->count(); i++) {
-        ColorWidget* colW = (ColorWidget*)colorList->itemAt(i);
+//        ColorWidget* colW = (ColorWidget*)colorList->itemAt(i);
         //        disconnect(this,SIGNAL(saveAllColors()),colW,SLOT(saveColor()));
         //        disconnect(colW,SIGNAL(deleteMe(ColorPair*)),this,SLOT(deleteColor(ColorPair*)));
         colorList->itemAt(i)->widget()->deleteLater();
@@ -44,8 +44,16 @@ void theme_editor_page::update_colors()
         colorWidget->setColorRef(listOfColors->at(i));
         connect(this,SIGNAL(saveAllColors()),colorWidget,SLOT(saveColor()));
         connect(colorWidget,SIGNAL(deleteMe(ColorPair*)),this,SLOT(deleteColor(ColorPair*)));
+        connect(colorWidget,SIGNAL(setEditedColor(bool)),this,SLOT(setColorEdited(bool)));
         colorList->addWidget(colorWidget);
     }
+}
+
+void theme_editor_page::setColorEdited(bool edited)
+{
+    std::cout << "TESTIIIIING" << std::endl;
+    std::cout << "EDITED: " << (edited ? "1" : "0") << std::endl;
+    isColorsChanged = edited;
 }
 
 theme_editor_page::~theme_editor_page()
@@ -80,6 +88,7 @@ void theme_editor_page::on_addColorButton_clicked()
     colorWidget->setColorRef(listOfColors->at(listOfColors->size() - 1));
     connect(this,SIGNAL(saveAllColors()),colorWidget,SLOT(saveColor()));
     connect(colorWidget,SIGNAL(deleteMe(ColorPair*)),this,SLOT(deleteColor(ColorPair*)));
+    connect(colorWidget,SIGNAL(setEditedColor(bool)),this,SLOT(setColorEdited(bool)));
     colorList->addWidget(colorWidget);
 }
 
@@ -299,6 +308,7 @@ void theme_editor_page::on_saveThemeButton_clicked()
             currentTheme->themePath = info.absoluteDir().absolutePath() + "/" + currentTheme->themeName + ".xml";
 
         emit sendNewThemeName(currentTheme->themeName);
+        isThemeNameChanged = false;
     }
     if(isThemeIconChanged)
     {
@@ -308,6 +318,7 @@ void theme_editor_page::on_saveThemeButton_clicked()
     }
 
     emit saveAllColors();
+    emit sendUpdatedTheme(currentTheme);
     this->close();
 }
 
@@ -363,3 +374,30 @@ void theme_editor_page::dropEvent(QDropEvent *e)
     }
 }
 
+void theme_editor_page::closeEvent(QCloseEvent *event)  // show prompt when user wants to close app
+{
+    if(isChangesPresent())
+    {
+        event->ignore();
+        if (QMessageBox::Yes == QMessageBox::question(this, "Close Confirmation", "You have unsaved modifications, are you"
+                                                      " sure you want to close the window without saving? (All your modifications"
+                                                      " will be lost)", QMessageBox::Yes | QMessageBox::No))
+        {
+            event->accept();
+        }
+    }
+    else
+        event->accept();
+}
+
+bool theme_editor_page::isChangesPresent()
+{
+    if(isThemeIconChanged || isThemeNameChanged || isColorsChanged)
+        return true;
+//    for(int i =0; i < colorList->count(); i++) {
+//        ColorWidget* colW = (ColorWidget*)colorList->itemAt(i);
+//        if(colW->isChangesPresent())
+//            return true;
+//    }
+    return false;
+}

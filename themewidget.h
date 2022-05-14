@@ -24,6 +24,7 @@ public:
 public slots:
     void updateThemeName(QString newName);
     void updateThemeIcon(QString themeIcon);
+    void getUpdatedTheme(Theme*);
 
 private slots:
     void on_theme_button_clicked();

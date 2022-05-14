@@ -13,7 +13,7 @@ class XMLReader
 {
 public:
     XMLReader();
-    void read(QFile& file, QList<Theme*>* listOfThemes);
+    void read(QFile& file, QList<Theme*>* listOfThemes, QString iconPath);
     void update(Theme* _theme, QString content, bool shouldReplace);
     void write(SystemStat* stat);
     SystemStat* getLastStat();

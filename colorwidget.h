@@ -51,12 +51,14 @@ public slots:
 
 signals:
     void deleteMe(ColorPair*);
+    void setEditedColor(bool);
 
 private:
     Ui::ColorWidget *ui;
     ColorPair* currentColor;
     void updateSource(QColor newColor);
     void updateDestination(QColor newColor);
+    bool isChangesPresent();
 
     bool isSourceColorChanged = false;
     bool isDestColorChanged = false;

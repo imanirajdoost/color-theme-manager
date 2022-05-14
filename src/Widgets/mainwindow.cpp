@@ -143,7 +143,7 @@ void MainWindow::on_button_create_theme_clicked()
     bool saved = false;
     QString finalPath = fileName;
     QString finalFileName = newTheme->themeName;
-    while(counter < 100 && !saved)
+    while(counter < 1000 && !saved)
     {
         QFileInfo check_file(finalPath);
         // check if file exists and if yes: Is it really a file and no directory?

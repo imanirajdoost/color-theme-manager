@@ -58,7 +58,7 @@ void ThemeWidget::updateThemeIcon(QString themeIcon)
 
 void ThemeWidget::setThemeReference(Theme* _themeRef)
 {
-//    std::cout << "setting Theme Ref" << std::endl;
+    //    std::cout << "setting Theme Ref" << std::endl;
     myTheme = _themeRef;
     setText(myTheme->themeName);
     std::cout << "ICON PATH: " + myTheme->iconPath.toStdString() << std::endl;
@@ -71,5 +71,16 @@ void ThemeWidget::setThemeReference(Theme* _themeRef)
 void ThemeWidget::setText(QString _buttonText)
 {
     ui->theme_button->setText(_buttonText);
+}
+
+
+void ThemeWidget::on_pushButton_clicked()
+{
+
+}
+
+void ThemeWidget::showInGraphicalShell(QWidget *parent, const QString &pathIn)
+{
+
 }
 

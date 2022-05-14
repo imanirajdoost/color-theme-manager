@@ -5,6 +5,7 @@
 #include "src/theme.h"
 #include <iostream>
 #include <mainwindow.h>
+#include <QHostInfo>
 
 namespace Ui {
 class ThemeWidget;
@@ -31,12 +32,15 @@ private slots:
 
 //signals:
     //void sendThemeData(Theme*);
+    void on_pushButton_clicked();
+
 signals:
     void updateTheme(Theme*);
 
 private:
     Ui::ThemeWidget *ui;
     Theme* myTheme;     //Theme pointer that is MINE!
+    void showInGraphicalShell(QWidget *parent, const QString &pathIn);
 //    Ui::MainWindow* _mainWindow;
 };
 

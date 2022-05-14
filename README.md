@@ -3,6 +3,14 @@
 
 ## Using the app
 ![Alt Text](other/colorTheme.gif)
+**Create or import** an existing theme using the button or by dragging and dropping the file.
+
+Click on the theme **to edit the name, icon and colors**. A color can be changed by pressing on the colored-square next to the color hex-name. An undo button will appear with the modifications of the theme, clicking on this button will revert the data to its initial status.
+
+To delete a color, click on the **X** cross at the right of the color. All modifications including deletion will take place **ONLY IF** you click on the **'Save button'**.
+
+To apply the theme on a file, click on the **'Apply colors on a file'** or drag and drop the file. The colors will automatically apply and the file will be saved.
+
 
 ## Implemeted features
 

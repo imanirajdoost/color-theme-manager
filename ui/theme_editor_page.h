@@ -73,6 +73,7 @@ private:
     bool isUrlValid(QString url);
     void applyOnFile(QString fileName);
     bool isChangesPresent();
+    void saveTheme();
     Theme* currentTheme;
     bool isThemeNameChanged = false;
     bool isThemeIconChanged = false;

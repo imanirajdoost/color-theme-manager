@@ -53,6 +53,7 @@ void MainWindow::update_themes()
         themeWidget->setThemeReference(listOfThemes->at(i));
         //        themeWidget->setMainWindowRef(this);
         connect(themeWidget,SIGNAL(updateTheme(Theme*)),this,SLOT(updateSingleTheme(Theme*)));
+        connect(themeWidget,SIGNAL(deleteTheme(Theme*)),this,SLOT(deleteTheme(Theme*)));
         themeList->addWidget(themeWidget);
     }
 }
@@ -60,6 +61,31 @@ void MainWindow::update_themes()
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+void MainWindow::deleteTheme(Theme* _theme)
+{
+    QList<Theme*>* temp = new QList<Theme*>;
+
+    for(int i=0; i < listOfThemes->count(); i++)
+    {
+        if(QString::compare(listOfThemes->at(i)->themeName,_theme->themeName) == 0)
+        {
+            //Delete the file
+            QFile file (listOfThemes->at(i)->themePath);
+            file.remove();
+            continue;
+        }
+        temp->push_back(listOfThemes->at(i));
+    }
+//    listOfThemes->clear();
+    listOfThemes = new QList<Theme*>;
+    for(int i=0; i < temp->count(); i++) {
+        listOfThemes->push_back(temp->at(i));
+    }
+//    listOfThemes = temp;
+
+    updateSingleTheme(NULL);
 }
 
 void MainWindow::dragEnterEvent(QDragEnterEvent *e)
@@ -105,10 +131,12 @@ void MainWindow::openFile(QString fileName, QString iconPath)
 
 void MainWindow::updateSingleTheme(Theme* _theme)
 {
-    add_message("Theme Updated: " + _theme->themeName,"black");
+    if(_theme != NULL)
+        add_message("Theme Updated: " + _theme->themeName,"black");
     update_themes();
 
-    add_message("Saving theme on disk: " + _theme->themeName,"black");
+    if(_theme != NULL)
+        add_message("Saving theme on disk: " + _theme->themeName,"black");
 
     stat = new SystemStat();
     XMLReader reader;

@@ -35,6 +35,7 @@ private slots:
 
 public slots:
     void updateSingleTheme(Theme* _theme);
+    void deleteTheme(Theme* _theme);
 
 private:
     QList<Theme*>* listOfThemes;

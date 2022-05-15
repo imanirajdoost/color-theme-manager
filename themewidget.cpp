@@ -50,7 +50,7 @@ void ThemeWidget::setThemeReference(Theme* _themeRef)
     //    std::cout << "setting Theme Ref" << std::endl;
     myTheme = _themeRef;
     setText(myTheme->themeName);
-//    std::cout << "ICON PATH: " + myTheme->iconPath.toStdString() << std::endl;
+    //    std::cout << "ICON PATH: " + myTheme->iconPath.toStdString() << std::endl;
     if(QString::compare(myTheme->iconPath,"") != 0)
     {
         updateThemeIcon(myTheme->iconPath);
@@ -74,5 +74,18 @@ void ThemeWidget::showInGraphicalShell()
 void ThemeWidget::on_pushButton_clicked()
 {
     showInGraphicalShell();
+}
+
+
+void ThemeWidget::on_deleteThemebutton_clicked()
+{
+    QMessageBox::StandardButton reply;
+    reply = QMessageBox::question(this, "Delete theme?",
+                                  "Are you sure you want to delete this theme?\n"
+                                  "The action is cannot be undone",
+                                  QMessageBox::Yes|QMessageBox::No);
+    if (reply == QMessageBox::Yes) {
+        emit deleteTheme(myTheme);
+    }
 }
 

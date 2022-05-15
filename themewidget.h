@@ -36,8 +36,11 @@ private slots:
 
     void on_pushButton_clicked();
 
+    void on_deleteThemebutton_clicked();
+
 signals:
     void updateTheme(Theme*);
+    void deleteTheme(Theme*);
 
 private:
     Ui::ThemeWidget *ui;

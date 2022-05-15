@@ -31,9 +31,12 @@ theme_editor_page::theme_editor_page(QWidget *parent) :
 
 void theme_editor_page::update_colors()
 {
-    for(int i =0; i < colorList->count(); i++) {
-        colorList->itemAt(i)->widget()->deleteLater();
-        colorList->removeWidget(colorList->itemAt(i)->widget());
+    while(QLayoutItem* item = colorList->layout()->takeAt(0))
+    {
+        Q_ASSERT( ! item->layout() ); // otherwise the layout will leak
+        item->widget()->deleteLater();
+//        delete item->widget();
+        delete item;
     }
     for(int i =0; i < listOfColors->size(); i++)
     {
@@ -149,6 +152,25 @@ void theme_editor_page::applyOnFile(QString fileName)
 
 void theme_editor_page::on_applyOnFileButton_clicked()
 {
+    if(isChangesPresent())
+    {
+        QMessageBox::StandardButton reply;
+        reply = QMessageBox::question(this, "Unsaved changes",
+                                      "You have unsaved changes on this theme,\n"
+                                      "You must save the theme before applying it on a file.\n"
+                                      "Would you like to save your changes to the theme before applying?",
+                                      QMessageBox::Yes|QMessageBox::No);
+        if (reply == QMessageBox::Yes) {
+            add_message("Saving theme","black");
+            saveTheme();
+        }
+        else
+        {
+            add_message("You have unsaved changes, save them before applying it to a file","red");
+            return;
+        }
+    }
+
     QString fileName = QFileDialog::getOpenFileName(this,tr("Open file"), "", tr("Text Files (*.xml *.txt *.php *.html *.htm)"));
     applyOnFile(fileName);
 }
@@ -276,6 +298,12 @@ void theme_editor_page::on_themeNameEditText_textChanged()
 
 void theme_editor_page::on_saveThemeButton_clicked()
 {
+    saveTheme();
+    this->close();
+}
+
+void theme_editor_page::saveTheme()
+{
     if(isThemeNameChanged)
     {
         //Check if file name already exist:
@@ -300,6 +328,10 @@ void theme_editor_page::on_saveThemeButton_clicked()
         if(directory.rename(info.fileName(),currentTheme->themeName + ".xml"))
             currentTheme->themePath = info.absoluteDir().absolutePath() + "/" + currentTheme->themeName + ".xml";
 
+        ui->themeNameEditText->setText(currentTheme->themeName);
+        ui->undoThemeNameButton->setStyleSheet("border-image: url(:/icons/trans.png);");
+        ui->themeNameEditText->setStyleSheet(QString("background-color: rgb(255, 255, 255);"));
+
         emit sendNewThemeName(currentTheme->themeName);
         isThemeNameChanged = false;
     }
@@ -313,7 +345,6 @@ void theme_editor_page::on_saveThemeButton_clicked()
     emit saveAllColors();
     emit sendUpdatedTheme(currentTheme);
     isColorsChanged = false;
-    this->close();
 }
 
 void theme_editor_page::deleteColor(ColorPair *col)
@@ -323,6 +354,7 @@ void theme_editor_page::deleteColor(ColorPair *col)
         if(listOfColors->at(i) == col)
             listOfColors->removeAt(i);
     }
+    update_colors();
 }
 
 

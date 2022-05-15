@@ -115,13 +115,29 @@ void ColorWidget::saveColor()
     if(currentColor != NULL)
     {
         if(isSourceColorChanged)
+        {
             currentColor->setColorSource(newSourceColor);
+            ui->undoColorSourceButton->setStyleSheet("border-image: url(:/icons/trans.png);");
+            ui->colorSourceText->setStyleSheet(QString("background-color: rgb(255, 255, 255);\ncolor: rgb(46, 52, 54);"));
+        }
         if(isDestColorChanged)
+        {
             currentColor->setColorTarget(newDestColor);
+            ui->undoColorDestButton->setStyleSheet("border-image: url(:/icons/trans.png);");
+            ui->colorDestText->setStyleSheet(QString("background-color: rgb(255, 255, 255);\ncolor: rgb(46, 52, 54);"));
+        }
         if(isColorIdChanged)
+        {
             currentColor->setId(newColorID);
+            ui->undoColorIdButton->setStyleSheet("border-image: url(:/icons/trans.png);");
+            ui->colorIdTextEdit->setStyleSheet(QString("background-color: rgb(255, 255, 255);\ncolor: rgb(46, 52, 54);"));
+        }
         if(shouldDelete)
+        {
             emit deleteMe(currentColor);
+            ui->deleteColorButton->setStyleSheet("border-image:url(:/icons/delete.png);");
+            ui->willBeDeletedText->setStyleSheet("color: rgba(0, 0, 0, 0);");
+        }
     }
 }
 

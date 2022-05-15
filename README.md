@@ -33,6 +33,8 @@ To apply the theme on a file, click on the **'Apply colors on a file'** or drag 
 - Apply the colors in the theme on a file (text, xml or anything textual) by choosing the file or dragging and dropping the file
 - Delete themes
 - Open each theme's containing folder (show in explorer)
+- Clear theme's list
+- Two themes with the same name cannot be imported
 
 ## Bugs and improvement points
 - If we create A LOT of theme files (more than 1000) the counter in 'create theme' button will not work (This can be solved easily by letting user choose a folder that they want but in this way, we have less user interaction and it's easier to use)

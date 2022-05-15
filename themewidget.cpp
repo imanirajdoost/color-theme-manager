@@ -82,6 +82,7 @@ void ThemeWidget::on_deleteThemebutton_clicked()
     QMessageBox::StandardButton reply;
     reply = QMessageBox::question(this, "Delete theme?",
                                   "Are you sure you want to delete this theme?\n"
+                                  "The xml file associated with this theme will be deleted as well\n"
                                   "The action is cannot be undone",
                                   QMessageBox::Yes|QMessageBox::No);
     if (reply == QMessageBox::Yes) {

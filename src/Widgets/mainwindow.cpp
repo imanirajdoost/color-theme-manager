@@ -100,21 +100,37 @@ void MainWindow::dropEvent(QDropEvent *e)
     foreach (const QUrl &url, e->mimeData()->urls()) {
         QString fileName = url.toLocalFile();
         add_message("Opening dragged file " + fileName,"black");
-        openFile(fileName,"");
-        updateSingleTheme(listOfThemes->at(listOfThemes->count() - 1));
+        if(openFile(fileName,""))
+            updateSingleTheme(listOfThemes->at(listOfThemes->count() - 1));
     }
 }
 
 void MainWindow::on_button_import_theme_clicked()
 {
     QString fileName = QFileDialog::getOpenFileName(this,tr("Open file"), "", tr("XML files (*.xml)"));
-    openFile(fileName,"");
-    updateSingleTheme(listOfThemes->at(listOfThemes->count() - 1));
+    if(openFile(fileName,""))
+        updateSingleTheme(listOfThemes->at(listOfThemes->count() - 1));
 }
 
-void MainWindow::openFile(QString fileName, QString iconPath)
+bool MainWindow::openFile(QString fileName, QString iconPath)
 {
     if(!fileName.isEmpty()) {
+        //Check if such file already exists
+        for(int i = 0; i < listOfThemes->count(); i++)
+        {
+            if(QString::compare(listOfThemes->at(i)->themePath,fileName) == 0)
+            {
+                add_message("A theme with this name already exists, please change it before importing","red");
+
+                QMessageBox messageBox;
+                messageBox.critical(this,"Error","A theme with this name already exists, please change the theme name and try again.");
+                messageBox.setFixedSize(500,200);
+
+                return false;
+            }
+        }
+
+
         XMLReader reader;
         QFile file;
         file.setFileName(fileName);
@@ -122,11 +138,13 @@ void MainWindow::openFile(QString fileName, QString iconPath)
         //        updateSingleTheme(listOfThemes->at(listOfThemes->count() - 1));
         update_themes();
         add_message("File imported: " + fileName,"black");
+        return true;
     }
     else {
         add_message("Error in loading file: No file or wrong extension was chosen","red");
         //std::cout << "ERROR: No file was found" << std::endl;
     }
+    return false;
 }
 
 void MainWindow::updateSingleTheme(Theme* _theme)
@@ -205,3 +223,17 @@ void MainWindow::on_button_create_theme_clicked()
 
     updateSingleTheme(newTheme);
 }
+
+void MainWindow::on_clearThemesButton_clicked()
+{
+    QMessageBox::StandardButton reply;
+    reply = QMessageBox::question(this, "Confirm clearing list",
+                                  "Are you sure you want to clear the themes list?\n"
+                                  "This will NOT delete theme files from your hard drive",
+                                  QMessageBox::Yes|QMessageBox::No);
+    if (reply == QMessageBox::Yes) {
+        listOfThemes->clear();
+        updateSingleTheme(NULL);
+    }
+}
+

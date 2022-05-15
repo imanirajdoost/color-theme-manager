@@ -26,7 +26,7 @@
      <layout class="QHBoxLayout" name="themeLayout"/>
     </item>
     <item>
-     <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,0">
+     <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,0,0">
       <property name="spacing">
        <number>100</number>
       </property>
@@ -71,6 +71,19 @@
         </property>
         <property name="text">
          <string>Import a theme (or drag and drop)</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="clearThemesButton">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>50</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>Clear themes</string>
         </property>
        </widget>
       </item>

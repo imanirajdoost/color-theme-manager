@@ -11,6 +11,7 @@
 #include <QStringListModel>
 #include <QStringList>
 #include <QScrollArea>
+#include <QMessageBox>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -33,6 +34,8 @@ private slots:
 
 //    void on_saveThemeButton_clicked();
 
+    void on_clearThemesButton_clicked();
+
 public slots:
     void updateSingleTheme(Theme* _theme);
     void deleteTheme(Theme* _theme);
@@ -43,7 +46,7 @@ private:
     SystemStat* stat;
 
 	Ui::MainWindow *ui;
-    void openFile(QString fileName, QString iconPath);
+    bool openFile(QString fileName, QString iconPath);
 protected:
     void dropEvent(QDropEvent *event) override;
     void dragEnterEvent(QDragEnterEvent *event) override;

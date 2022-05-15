@@ -48,7 +48,7 @@ void theme_editor_page::update_colors()
 
 void theme_editor_page::setColorEdited(bool edited)
 {
-//    std::cout << "EDITED: " << (edited ? "1" : "0") << std::endl;
+    //    std::cout << "EDITED: " << (edited ? "1" : "0") << std::endl;
     isColorsChanged = edited;
 }
 
@@ -86,6 +86,7 @@ void theme_editor_page::on_addColorButton_clicked()
     connect(colorWidget,SIGNAL(deleteMe(ColorPair*)),this,SLOT(deleteColor(ColorPair*)));
     connect(colorWidget,SIGNAL(setEditedColor(bool)),this,SLOT(setColorEdited(bool)));
     colorList->addWidget(colorWidget);
+    add_message("Added a new color to the list", "black");
 }
 
 void theme_editor_page::applyOnFile(QString fileName)
@@ -94,7 +95,7 @@ void theme_editor_page::applyOnFile(QString fileName)
     QFile file(fileName);
     if(file.open(QIODevice::ReadWrite))
     {
-        add_message("Applying colors on the selected file...","black");
+        add_message("Applying colors on the selected file: " + fileName,"black");
 
         int skipped = 0;
         int replaced = 0;
@@ -130,7 +131,7 @@ void theme_editor_page::applyOnFile(QString fileName)
         file.write(text.toUtf8()); // write the new text back to the file
 
         file.close(); // close the file handle.
-
+        add_message("Finished applying colors" + QString::number(replaced),"black");
         add_message("Total colors replaced: " + QString::number(replaced),"black");
         add_message("Total colors skipped: " + QString::number(skipped),"black");
 
@@ -203,8 +204,8 @@ void theme_editor_page::on_getFromWebButton_clicked()
     QInputDialog dialog;
     dialog.setFixedSize(500,200);
     QString text = dialog.getText(this, tr("Download from Internet"),
-                                         tr("Paste the link here:"), QLineEdit::Normal,
-                                         "", &ok);
+                                  tr("Paste the link here:"), QLineEdit::Normal,
+                                  "", &ok);
     if (ok && !text.isEmpty()) {
         std::cout << text.toStdString() << std::endl;
         QUrl* url = new QUrl(text);
@@ -235,12 +236,12 @@ void theme_editor_page::on_getFromWebButton_clicked()
             connect(response, SIGNAL(finished()), this, SLOT(downloadFinished()));
             connect(response, SIGNAL(downloadProgress(qint64,qint64)), this, SLOT(downloadProgress(qint64,qint64)));
             event.exec();
+            //            _sleep(5000);
             QString content = response->readAll();
             std::cout << content.toStdString() << std::endl;
 
             XMLReader reader;
             reader.update(currentTheme, content, shouldReplace);
-//            _sleep(1000);
             listOfColors = currentTheme->getColorPair();
 
             update_colors();
@@ -363,6 +364,7 @@ void theme_editor_page::dropEvent(QDropEvent *e)
 {
     foreach (const QUrl &url, e->mimeData()->urls()) {
         QString fileName = url.toLocalFile();
+        add_message("Applying colors to the dragged file","black");
         applyOnFile(fileName);
     }
 }
@@ -371,6 +373,7 @@ void theme_editor_page::closeEvent(QCloseEvent *event)  // show prompt when user
 {
     if(isChangesPresent())
     {
+        add_message("You have unsaved changes for this theme, make sure to save them if you want.","red");
         event->ignore();
         if (QMessageBox::Yes == QMessageBox::question(this, "Close Confirmation", "You have unsaved modifications, are you"
                                                       " sure you want to close the window without saving? (All your modifications"

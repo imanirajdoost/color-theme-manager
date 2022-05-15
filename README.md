@@ -1,6 +1,8 @@
 # Color Theme Manager
 ### Iman IRAJ DOOST - 22102163
 
+I tried to simplify the UI/UX for the user as much as possible, so I reduced the number of buttons and tabs, for example, there is no save button in the first page and the themes are automatically saved. Colors are both in color code and in real color so that users who have trouble seeing the colors, can identify them using their code. The application flow is easy to understand
+
 ## Using the app
 ![Alt Text](other/colorTheme.gif)
 **Create or import** an existing theme using the button or by dragging and dropping the file.
@@ -35,6 +37,7 @@ To apply the theme on a file, click on the **'Apply colors on a file'** or drag 
 - If we create A LOT of theme files (more than 1000) the counter in 'create theme' button will not work
 - If the user tempers with the XML files directly, or changes the file locations, the app might crash
 - It's possible to open multiple themes together (it might cause problems, I'm not sure but I need to do more testing)
-- UI can be improved (ex. more icons instead of buttons)
+- UI can be improved (ex. more icons instead of buttons and adding animations for custom buttons)
 - A delete button for each theme is a good idea !
 - We can add an option for applying colors to themes; if the user wants to change a file, they can save it under the same name (overwrite it) or as a new file. (So they won't tamper the original file)
+- Multi threading for loading huge files, downloading, etc.

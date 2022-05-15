@@ -64,9 +64,6 @@ void ColorWidget::changeSourceColor(QColor sourceCol) {
         isSourceColorChanged = true;
         //        ui->undoColorSourceButton->setVisible(true);
         ui->undoColorSourceButton->setStyleSheet("border-image: url(:/icons/undo.png);");
-        // Make the button "visible"
-        //        ui->undoColorSourceButton->setPalette(QPalette()); // Back to the default palette
-        //        ui->undoColorSourceButton->setEnabled(true);
 
         ui->colorSourceText->setStyleSheet(QString("background-color: rgb(255, 142, 144);\ncolor: rgb(46, 52, 54);"));
         //currentColor->setColorSource(sourceCol);
@@ -76,10 +73,6 @@ void ColorWidget::changeSourceColor(QColor sourceCol) {
         isSourceColorChanged = false;
         //        ui->undoColorSourceButton->setVisible(false);
         ui->undoColorSourceButton->setStyleSheet("border-image: url(:/icons/trans.png);");
-        // Make the button "invisible"
-        //        QBrush tb(Qt::transparent); // Transparent brush, solid pattern
-        //        ui->undoColorSourceButton->setPalette(QPalette(tb, tb, tb, tb, tb, tb, tb, tb, tb)); // Set every color roles to the transparent brush
-        //        ui->undoColorSourceButton->setEnabled(false);
 
         ui->colorSourceText->setStyleSheet(QString("background-color: rgb(255, 255, 255);\ncolor: rgb(46, 52, 54);"));
     }

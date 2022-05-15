@@ -34,6 +34,7 @@ MainWindow::MainWindow(QWidget *parent)
         add_message("Loading session...","black");
         for(int i=0; i < stat->linksToFiles->count(); i++)
             openFile(stat->linksToFiles->at(i),stat->linksToIcons->at(i));
+        add_message("Last session loaded successfully","black");
     }
 }
 
@@ -72,7 +73,9 @@ void MainWindow::dropEvent(QDropEvent *e)
 {
     foreach (const QUrl &url, e->mimeData()->urls()) {
         QString fileName = url.toLocalFile();
+        add_message("Opening dragged file " + fileName,"black");
         openFile(fileName,"");
+        updateSingleTheme(listOfThemes->at(listOfThemes->count() - 1));
     }
 }
 
@@ -80,6 +83,7 @@ void MainWindow::on_button_import_theme_clicked()
 {
     QString fileName = QFileDialog::getOpenFileName(this,tr("Open file"), "", tr("XML files (*.xml)"));
     openFile(fileName,"");
+    updateSingleTheme(listOfThemes->at(listOfThemes->count() - 1));
 }
 
 void MainWindow::openFile(QString fileName, QString iconPath)
@@ -89,7 +93,9 @@ void MainWindow::openFile(QString fileName, QString iconPath)
         QFile file;
         file.setFileName(fileName);
         reader.read(file,listOfThemes, iconPath);
+        //        updateSingleTheme(listOfThemes->at(listOfThemes->count() - 1));
         update_themes();
+        add_message("File imported: " + fileName,"black");
     }
     else {
         add_message("Error in loading file: No file or wrong extension was chosen","red");
@@ -102,7 +108,7 @@ void MainWindow::updateSingleTheme(Theme* _theme)
     add_message("Theme Updated: " + _theme->themeName,"black");
     update_themes();
 
-    add_message("Saving theme on disk...","black");
+    add_message("Saving theme on disk: " + _theme->themeName,"black");
 
     stat = new SystemStat();
     XMLReader reader;
@@ -171,52 +177,3 @@ void MainWindow::on_button_create_theme_clicked()
 
     updateSingleTheme(newTheme);
 }
-
-//void MainWindow::on_saveThemeButton_clicked()
-//{
-//    stat = new SystemStat();
-//    add_message("Saving themes...","black");
-//    XMLReader reader;
-//    for(int i =0; i< listOfThemes->count(); i++)
-//    {
-//        Theme* newTheme = listOfThemes->at(i);
-//        QString newPath = newTheme->themePath;
-//        if(QString::compare(newPath,"") == 0)
-//        {
-//            //            newPath = listOfThemes->at(i)->themeName + ".xml";
-//            QString fileName = QDir::currentPath() + "/" + newTheme->themeName + ".xml";
-//            std::cout << "FILE NAME: " << fileName.toStdString() << std::endl;
-//            int counter = 0;
-//            bool saved = false;
-//            QString finalPath = fileName;
-//            while(counter < 100 && !saved)
-//            {
-//                QFileInfo check_file(finalPath);
-//                // check if file exists and if yes: Is it really a file and no directory?
-//                if (check_file.exists() && check_file.isFile())
-//                {
-//                    finalPath = QDir::currentPath() + "/" + newTheme->themeName + QString::number(counter) + ".xml";
-//                }
-//                else
-//                {
-//                    newTheme->themePath = finalPath;
-
-//                    XMLReader xmlManager;
-//                    xmlManager.writeTheme(newTheme);
-//                    saved = true;
-//                }
-//                counter++;
-//            }
-//            if(!saved)
-//                add_message("Could not save theme, change your theme's name and try again","red");
-//            else
-//                add_message("Theme saved on disk at " + newTheme->themePath,"black");
-//        }
-//        stat->linksToFiles->push_back(newPath);
-//        stat->linksToIcons->push_back(newTheme->iconPath);
-//        reader.write(stat);
-//        reader.writeTheme(newTheme);
-//    }
-//    add_message("Themes saved on disk","black");
-//}
-

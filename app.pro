@@ -37,7 +37,6 @@ SOURCES += \
 	src/theme.cpp \
 	src/xmlreader.cpp \
 	themewidget.cpp \
-	ui/home_page.cpp \
 	ui/theme_editor_page.cpp
 
 HEADERS += \
@@ -48,14 +47,12 @@ HEADERS += \
     src/theme.h \
     src/xmlreader.h \
     themewidget.h \
-    ui/home_page.h \
     ui/theme_editor_page.h
 
 FORMS += \
 	colorwidget.ui \
 	mainwindow.ui \
 	themewidget.ui \
-	ui/home_page.ui \
 	ui/theme_editor_page.ui
 
 # Default rules for deployment.

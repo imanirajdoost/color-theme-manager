@@ -10,18 +10,5 @@ int main(int argc, char *argv[])
 	MainWindow w;
 	w.show();
 
-    /*
-    ColorPair col;
-    std::cout << col.toRGBA(QColor("aaaaaa")).toStdString() << std::endl;
-
-    XMLReader reader;
-    QFile file;
-    file.setFileName("darkTheme.xml");
-    QDir::setCurrent("D:/");
-
-    reader.read(file);
-    */
-
-
 	return a.exec();
 }

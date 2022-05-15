@@ -32,9 +32,6 @@ theme_editor_page::theme_editor_page(QWidget *parent) :
 void theme_editor_page::update_colors()
 {
     for(int i =0; i < colorList->count(); i++) {
-//        ColorWidget* colW = (ColorWidget*)colorList->itemAt(i);
-        //        disconnect(this,SIGNAL(saveAllColors()),colW,SLOT(saveColor()));
-        //        disconnect(colW,SIGNAL(deleteMe(ColorPair*)),this,SLOT(deleteColor(ColorPair*)));
         colorList->itemAt(i)->widget()->deleteLater();
         colorList->removeWidget(colorList->itemAt(i)->widget());
     }
@@ -243,7 +240,7 @@ void theme_editor_page::on_getFromWebButton_clicked()
 
             XMLReader reader;
             reader.update(currentTheme, content, shouldReplace);
-
+//            _sleep(1000);
             listOfColors = currentTheme->getColorPair();
 
             update_colors();
@@ -390,10 +387,5 @@ bool theme_editor_page::isChangesPresent()
 {
     if(isThemeIconChanged || isThemeNameChanged || isColorsChanged)
         return true;
-//    for(int i =0; i < colorList->count(); i++) {
-//        ColorWidget* colW = (ColorWidget*)colorList->itemAt(i);
-//        if(colW->isChangesPresent())
-//            return true;
-//    }
     return false;
 }

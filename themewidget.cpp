@@ -17,29 +17,18 @@ ThemeWidget::~ThemeWidget()
 void ThemeWidget::on_theme_button_clicked()
 {
     std::cout << "Clicked on theme " << std::endl;
-    //QPushButton* button = findChild<QPushButton*>("theme_button");
-    //button->setText("testttttttt");
     theme_editor_page *wdg = new theme_editor_page;
     wdg->show();
     wdg->receiveThemeData(myTheme);
     connect(wdg,SIGNAL(sendNewThemeName(QString)),this,SLOT(updateThemeName(QString)));
     connect(wdg,SIGNAL(sendNewThemeIcon(QString)),this,SLOT(updateThemeIcon(QString)));
     connect(wdg,SIGNAL(sendUpdatedTheme(Theme*)),this,SLOT(getUpdatedTheme(Theme*)));
-    //    wdg->setMainWindowRef(_mainWindow);
-    // connect(this,SIGNAL(sendThemeData(Theme*)),wdg,SLOT(receiveThemeData(Theme*)));
-    // emit sendThemeData(myTheme);
-
-    // this->hide(); //this will disappear main window
 }
 
 void ThemeWidget::getUpdatedTheme(Theme * upTheme)
 {
     emit updateTheme(upTheme);
 }
-
-//void ThemeWidget::setMainWindowRef(Ui::MainWindow* mainWin) {
-//    _mainWindow = mainWin;
-//}
 
 void ThemeWidget::updateThemeName(QString newName)
 {
